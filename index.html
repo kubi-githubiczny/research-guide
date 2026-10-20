@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Interview Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body{margin:0}
+
+/* Layout: a charcoal frame holding a warm grey canvas; light-weight type, white pill controls, thin connector lines and a lime marker for "here and now". */
+:root{
+  --frame:#3A3A38; --frame-ink:#F1F0EB;
+  --bg:#DEDCD5; --surface:#ECEBE6; --white:#FFFFFF; --sunk:#E3E1DB; --ink:#1D1D1B; --muted:#55534D; --line:#C4C2BA;
+  --accent:#E6F03C; --accent-2:#E6F03C; --accent-ink:#1D1D1B; --accent-soft:#F2F6BE;
+  --pill:#2B2B29; --pill-ink:#F7F7F2;
+  --tip:#E3E1DB; --tip-ink:#3B3A36; --ok:#2E7D4F; --ok-soft:#DCEBD9; --warn:#C24E22; --warn-soft:#F3DFD4;
+  --display:"Manrope", "Helvetica Neue", Arial, sans-serif;
+  --body:"Manrope", "Helvetica Neue", Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:26px; --r-s:16px;
+  --shadow:none;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar: three floating white capsules */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg)}
+.bar-in{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-block:14px;max-width:2000px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:6px 18px 6px 6px;min-width:0}
+.mark{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+.brand-t{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.brand b{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand span.sub{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.tabs{display:flex;gap:2px;background:var(--surface);padding:5px;border-radius:999px;overflow-x:auto;max-width:100%}
+.tab{border:0;background:transparent;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:500;font-size:14px;white-space:nowrap;color:var(--muted)}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--pill);color:var(--pill-ink)}
+.timer{margin-left:auto;display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:5px 5px 5px 18px}
+.clock{font-family:var(--display);font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;min-width:4.4ch;text-align:right;letter-spacing:-.01em}
+.btn{border:0;background:var(--sunk);padding:9px 18px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px}
+.btn:hover{background:var(--line)}
+.btn.primary{background:var(--pill);color:var(--pill-ink)}
+.btn.primary:hover{opacity:.88}
+.timer .btn.primary{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.small{padding:6px 13px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+main{max-width:1440px;margin:0 auto;padding-block:8px 60px}
+.view{display:block}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:32px;font-weight:600;letter-spacing:-.025em;line-height:1.15}
+h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:15px;font-weight:600}
+.eyebrow{font-size:12.5px;font-weight:500;color:var(--muted)}
+.lede{color:var(--muted);max-width:65ch;margin:6px 0 0}
+.panel{background:var(--surface);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* setup */
+.setup{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;margin-top:20px}
+@media (max-width:860px){.setup{grid-template-columns:1fr}}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:520px){.fields{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.wide{grid-column:1/-1}
+label.lab,.lab{font-size:12.5px;font-weight:600;color:var(--muted)}
+input[type=text],input[type=date],select,textarea{width:100%;background:var(--sunk);border:1px solid transparent;border-radius:var(--r-s);padding:10px 14px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+textarea{resize:vertical;min-height:64px;line-height:1.5}
+.req{color:var(--accent)}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:var(--r-s);background:var(--sunk);margin-bottom:8px}
+.check input{margin-top:3px;accent-color:var(--ink);width:17px;height:17px;flex:none}
+.seg{display:inline-flex;background:var(--sunk);border-radius:999px;padding:4px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--pill);color:var(--pill-ink)}
+
+/* interview layout */
+.iv{display:grid;grid-template-columns:230px minmax(0,1fr) 330px;gap:16px;align-items:start;margin-top:4px}
+@media (max-width:1180px){.iv{grid-template-columns:210px minmax(0,1fr)}.capture{grid-column:1/-1}}
+@media (max-width:760px){.iv{grid-template-columns:1fr}}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 82px);display:flex;flex-direction:column;gap:10px}
+@media (max-width:760px){.rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}}
+.stage-btn{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;text-align:left;border:0;background:var(--surface);border-radius:20px;padding:14px 16px;cursor:pointer;min-width:0}
+@media (max-width:760px){.stage-btn{min-width:180px}}
+.stage-btn:hover{background:var(--sunk)}
+.stage-btn .n{grid-row:1/3;width:28px;height:28px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-size:13px;font-weight:700}
+.stage-btn .t{font-weight:600;font-size:14px;line-height:1.25}
+.stage-btn .m{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stage-btn .m.over{color:var(--warn);font-weight:600}
+.meter{grid-column:1/-1;height:6px;background:repeating-linear-gradient(-45deg,var(--sunk) 0 4px,var(--line) 4px 6px);border-radius:6px;overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--ink);border-radius:6px}
+.stage-btn[aria-current="step"]{background:var(--accent);color:var(--accent-ink)}
+.stage-btn[aria-current="step"] .n{background:rgba(0,0,0,.08);color:var(--accent-ink)}
+.stage-btn[aria-current="step"] .m{color:rgba(0,0,0,.6)}
+.stage-btn[aria-current="step"] .meter{background:rgba(0,0,0,.12)}
+.stage-btn[aria-current="step"] .meter i{background:#fff}
+.rail > .btn{border-radius:20px;padding:13px 16px;background:var(--pill);color:var(--pill-ink)}
+
+.stage-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 16px;align-items:flex-end;margin-bottom:16px;padding:4px 4px 0}
+.goal{color:var(--muted);margin:6px 0 0;max-width:65ch}
+.script{background:var(--surface);border-radius:var(--r);padding:20px 22px;margin-bottom:14px}
+.script p{margin:0 0 10px;max-width:75ch}
+.script p:last-child{margin:0}
+.es{font-style:italic;color:var(--muted)}
+.prompt{background:var(--surface);border-radius:var(--r);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);border:1.5px solid transparent}
+.prompt.done{border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.p-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;padding:18px 20px 14px;align-items:start}
+.p-id{font-size:12.5px;font-weight:700;color:var(--ink);background:var(--sunk);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.p-q{font-weight:600;font-size:16.5px;line-height:1.4;margin:0;letter-spacing:-.005em}
+.p-es{margin:5px 0 0;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.chip.star{background:var(--accent-soft);color:var(--accent)}
+.asked{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;padding:6px 12px;background:var(--sunk);border-radius:999px;user-select:none}
+.asked input{accent-color:var(--ok);width:15px;height:15px;margin:0}
+.prompt.done .asked{background:var(--ok-soft);color:var(--ok)}
+.p-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:16px;padding:0 20px 20px}
+@media (max-width:980px){.p-body{grid-template-columns:1fr}}
+.probe{font-size:13.5px;color:var(--muted);margin:0 0 10px}
+.probe b{color:var(--ink);font-weight:600}
+.tips{display:flex;flex-direction:column;gap:8px}
+.tip{background:var(--tip);color:var(--tip-ink);border-radius:var(--r-s);padding:10px 12px;font-size:13px;line-height:1.45}
+.tip.live{background:var(--accent-soft);color:var(--warn)}
+.tip b{font-weight:700}
+#stageWarn{background:var(--accent-soft);color:var(--warn);margin-bottom:12px}
+.callout{background:var(--surface);border-radius:var(--r);padding:20px 22px;margin-bottom:14px}
+.callout .line{font-size:12.5px;color:var(--accent);font-weight:700;letter-spacing:.04em;margin:10px 0;padding:10px 14px;background:var(--accent-soft);border-radius:var(--r-s);overflow-x:auto;white-space:nowrap}
+.subhead{margin:22px 4px 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.stage-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+
+/* capture */
+.capture{position:sticky;top:calc(env(safe-area-inset-top,0px) + 82px)}
+@media (max-width:1180px){.capture{position:static}}
+.cap-in{display:flex;flex-direction:column;gap:12px}
+.cap-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cap-btns .btn{padding:8px 6px}
+.cap-btns .btn[data-cap="quote"]{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink)}
+.log{display:flex;flex-direction:column;gap:6px;max-height:46vh;overflow:auto}
+.entry{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;font-size:13.5px;padding:10px 12px;border-radius:var(--r-s);background:var(--sunk)}
+.entry .ts{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:1px}
+.entry .k{font-size:11px;font-weight:600;color:var(--accent);display:block}
+.entry p{margin:0;word-break:break-word}
+.x{border:0;background:transparent;cursor:pointer;color:var(--muted);font-size:17px;line-height:1;padding:2px 4px}
+.empty{color:var(--muted);font-size:13.5px;margin:0}
+
+/* review */
+.review{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:20px}
+@media (max-width:900px){.review{grid-template-columns:1fr}}
+.cov{display:grid;grid-template-columns:minmax(0,1fr) 2fr auto;gap:12px 14px;align-items:center;font-size:14px}
+.bar-t{height:14px;background:repeating-linear-gradient(-45deg,var(--accent-soft) 0 5px,color-mix(in srgb,var(--accent) 35%,var(--surface)) 5px 7px);border-radius:6px;overflow:hidden}
+.bar-t i{display:block;height:100%;background:var(--ink);border-radius:6px}
+.num{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700}
+.sugg{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.sugg li{background:var(--sunk);color:var(--tip-ink);padding:12px 14px;border-radius:var(--r-s);font-size:14px;position:relative;padding-left:30px}
+.sugg li::before{content:"";position:absolute;left:14px;top:19px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hyp{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.hyp:last-child{border-bottom:0}
+.hyp .hid{font-weight:700;font-size:12.5px;background:var(--sunk);border-radius:999px;padding:3px 10px;height:max-content}
+.ai-out{white-space:pre-wrap;font-size:14px;background:var(--sunk);border-radius:var(--r-s);padding:14px;max-height:420px;overflow:auto;margin:0;font-family:var(--body)}
+.status{font-size:13.5px;color:var(--muted);min-height:1.4em;margin:0}
+.status.ok{color:var(--ok)} .status.err{color:var(--warn)}
+#saveBtn{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink)}
+
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:20px}
+.card{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.card h3{font-size:17px}
+.meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px}
+.meta span{background:var(--sunk);border-radius:999px;padding:2px 10px}
+.banner{background:var(--surface);border-radius:var(--r);padding:18px 20px;font-size:14px;color:var(--muted);margin-top:18px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--pill);color:var(--pill-ink);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:500;z-index:20;max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.prompt,.stage-btn,.tab,.btn{transition:border-color .15s,background .15s,opacity .15s}}
+
+/* ---- timeline navigator ---- */
+.tl-card{background:var(--surface);border-radius:var(--r);padding:16px 20px 10px;box-shadow:var(--shadow);margin-bottom:16px}
+@media (min-width:900px){.tl-card{position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);z-index:4;box-shadow:0 6px 20px rgba(20,20,30,.06)}}
+.tl-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:10px}
+.tl-pace{font-size:13.5px;padding:6px 14px;border-radius:999px;background:var(--sunk)}
+.tl-pace.ok{background:var(--ok-soft);color:var(--ok)}
+.tl-pace.late{background:var(--accent-soft);color:var(--warn)}
+.tl-pace.early{background:var(--sunk);color:var(--ink)}
+.tl-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.tl-legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:10px;height:10px;border-radius:50%;border:2px solid #A9A79F;background:var(--surface);display:inline-block}
+.lg.done{background:var(--ink);border-color:var(--ink)}
+.lg.star{border-color:var(--accent)}
+.lg.act{border-radius:3px}
+.lg.now{width:3px;height:12px;border:0;border-radius:2px;background:var(--accent)}
+.tl-scroll{overflow-x:auto;margin:0 -8px;padding:0 8px}
+.tl{position:relative;min-width:980px;padding:0 14px}
+.tl-segs{position:relative;height:50px}
+.tl-seg{position:absolute;top:0;height:46px;border:0;border-radius:14px;background:var(--sunk);text-align:left;padding:6px 10px;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;align-items:center;overflow:hidden;box-shadow:inset 0 0 0 2px var(--surface)}
+.tl-seg:hover{background:var(--line)}
+.tl-seg.cur{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink)}
+.tl-sn{grid-row:1/3;width:22px;height:22px;border-radius:50%;background:var(--surface);color:var(--ink);display:grid;place-items:center;font-size:12px;font-weight:800}
+.tl-st{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tl-sm{font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tl-seg.cur .tl-sm{color:rgba(0,0,0,.6)}
+.tl-sm.over{color:var(--warn);font-weight:700}
+.tl-seg.cur .tl-sm.over{color:var(--accent-ink);text-decoration:underline}
+.tl-track{position:relative;height:78px}
+.tl-track::before{content:"";position:absolute;left:0;right:0;top:38px;height:6px;border-radius:6px;background:repeating-linear-gradient(-45deg,var(--sunk) 0 5px,#DADAE0 5px 7px)}
+.tl-fill{position:absolute;left:0;top:38px;height:6px;border-radius:6px;background:var(--ink);width:0}
+.tl-dot{position:absolute;top:24px;transform:translateX(-50%);border:0;background:transparent;padding:0;width:34px;height:34px;cursor:pointer;display:grid;place-items:center;z-index:2}
+.tl-dot i{width:16px;height:16px;border-radius:50%;background:var(--surface);border:2.5px solid #A9A79F;display:block;transition:transform .12s}
+.tl-dot.act i{border-radius:5px;width:13px;height:13px}
+.tl-dot.star i{border-color:var(--accent)}
+.tl-dot.done i{background:var(--ink);border-color:var(--ink)}
+.tl-dot:hover i{transform:scale(1.25)}
+.tl-dot.cur i{width:24px;height:24px;background:linear-gradient(135deg,var(--accent-2),var(--accent));border:4px solid var(--surface);box-shadow:0 0 0 2px var(--accent),0 4px 12px rgba(0,0,0,.18)}
+.tl-dot.cur.act i{border-radius:7px}
+.tl-id{position:absolute;bottom:31px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.tl-dot.cur .tl-id{color:var(--accent);font-size:11.5px}
+.tl-stop{position:absolute;top:32px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:var(--accent);white-space:nowrap;background:var(--surface);padding:0 3px;border-radius:4px}
+.tl-stop.lo{top:44px}
+.tl-now{position:absolute;top:6px;bottom:4px;width:2px;background:var(--accent);left:0;transform:translateX(-1px);z-index:3;pointer-events:none}
+.tl-now span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);z-index:4;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--accent);color:var(--accent-ink);padding:1px 7px;border-radius:999px;white-space:nowrap}
+.tl-ticks{position:relative;height:20px;margin-top:4px}
+.tl-tick{position:absolute;transform:translateX(-50%);font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---- focus + lists ---- */
+.iv2{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media (max-width:1100px){.iv2{grid-template-columns:1fr}.capture{position:static}}
+.capture{top:calc(env(safe-area-inset-top,0px) + 262px)}
+.focus{padding:22px 24px}
+.focus-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 16px;align-items:flex-start;margin-bottom:14px}
+.focus-top .goal{margin-top:4px;font-size:13.5px}
+.focus-body{display:flex;flex-direction:column;gap:14px}
+.focus-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.focus-meta .asked{margin-left:auto}
+.chip.stop{background:var(--ink);color:var(--surface)}
+.focus-q{font-family:var(--display);font-size:clamp(20px,2.2vw,26px);font-weight:600;line-height:1.3;letter-spacing:-.015em;margin:0;max-width:40ch}
+.focus-es{font-size:16px;margin:-6px 0 0;max-width:60ch}
+.focus-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.focus-grid{grid-template-columns:1fr}}
+.probe-box{background:var(--sunk);border-radius:var(--r-s);padding:12px 14px}
+.probe-box p{margin:4px 0 0;font-size:14px}
+.prompt-focus.done .asked{background:var(--ok-soft);color:var(--ok)}
+.say-box{background:var(--sunk);border-radius:var(--r-s);padding:16px 18px}
+.say-box p{margin:0 0 10px;max-width:75ch}
+.say-box p:last-child{margin:0}
+.say{font-size:16px}
+.focus-body .line{font-size:12.5px;color:var(--accent);font-weight:700;letter-spacing:.04em;padding:10px 14px;background:var(--accent-soft);border-radius:var(--r-s);overflow-x:auto;white-space:nowrap}
+.focus-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.kbd{font-size:12px;color:var(--muted)}
+@media (max-width:560px){.kbd{display:none}}
+.upnext{display:flex;flex-direction:column;gap:2px;text-align:left;border:0;background:var(--surface);border-radius:var(--r);padding:14px 20px;cursor:pointer;box-shadow:var(--shadow)}
+.upnext:hover{background:var(--sunk)}
+.un-q{font-size:15px;color:var(--ink)}
+.stage-list{display:flex;flex-direction:column;gap:4px;padding:18px 20px}
+.stage-list h3{margin-bottom:6px}
+.sl-row{display:grid;grid-template-columns:auto 44px minmax(0,1fr) auto;gap:10px;align-items:center;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:12px;cursor:pointer;font-size:14px}
+.sl-row:hover{background:var(--sunk)}
+.sl-row.cur{background:var(--accent-soft)}
+.sl-dot{width:10px;height:10px;border-radius:50%;border:2px solid #A9A79F}
+.sl-row.done .sl-dot{background:var(--ink);border-color:var(--ink)}
+.sl-row.cur .sl-dot{border-color:var(--accent);background:var(--accent)}
+.sl-id{font-weight:700;font-size:12.5px;color:var(--muted)}
+.sl-q{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-row.done .sl-q{color:var(--muted)}
+
+/* ---- start page ---- */
+.start-hero{display:flex;flex-direction:column;gap:16px;padding:18px 4px 6px}
+.hello{font-size:clamp(30px,4vw,44px);font-weight:600;letter-spacing:-.03em;margin-top:6px}
+.start-hero .lede{font-size:16px;max-width:62ch}
+.start-hero .lede b{color:var(--ink)}
+.btn.big{padding:13px 22px;font-size:15px}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+@media (max-width:1000px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:540px){.flow{grid-template-columns:1fr}}
+.flow-card{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.flow-card.hot{background:var(--accent);color:var(--accent-ink)}
+.fc-top{display:flex;justify-content:space-between;align-items:center}
+.fc-n{width:32px;height:32px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-weight:800}
+.flow-card.hot .fc-n{background:rgba(0,0,0,.08)}
+.fc-time{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.flow-card.hot .fc-time{background:rgba(0,0,0,.08);color:var(--accent-ink)}
+.flow-card h2{font-size:22px}
+.flow-card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.flow-card:not(.hot) ul{color:var(--tip-ink)}
+.start-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px;align-items:start}
+@media (max-width:900px){.start-grid{grid-template-columns:1fr}}
+.legend-rows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.lr{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center;font-size:14px}
+.demo-dot{width:16px;height:16px;border-radius:50%;border:2.5px solid #A9A79F;background:var(--surface);justify-self:center}
+.demo-dot.done{background:var(--ink);border-color:var(--ink)}
+.demo-dot.star{border-color:var(--accent)}
+.demo-dot.act{border-radius:5px;width:13px;height:13px}
+.demo-dot.cur{width:22px;height:22px;background:linear-gradient(135deg,var(--accent-2),var(--accent));border:3px solid var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.demo-now{width:3px;height:20px;border-radius:2px;background:var(--accent);justify-self:center}
+.demo-tip{width:22px;height:14px;border-radius:5px;background:var(--accent-soft);border:1.5px solid var(--accent);justify-self:center}
+.keys{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:8px;font-size:13.5px;color:var(--muted)}
+kbd{font-family:var(--body);font-size:12px;font-weight:700;background:var(--sunk);border-radius:6px;padding:2px 7px;color:var(--ink);box-shadow:inset 0 -1px 0 var(--line)}
+.rescue{display:flex;flex-direction:column;gap:6px}
+.rs-row{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:4px 14px;padding:10px 12px;border-radius:var(--r-s);background:var(--sunk);font-size:14px}
+@media (max-width:540px){.rs-row{grid-template-columns:1fr}}
+.rs-row b{font-weight:700}
+.foot-note{font-size:13px;color:var(--muted);margin:16px 4px 0;max-width:70ch}
+.stuck{background:var(--pill);color:var(--pill-ink)}
+.stuck[aria-expanded="true"]{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--accent-ink)}
+#stuckPanel{margin-top:12px;max-height:40vh;overflow:auto}
+
+/* ---- frame & aesthetic overrides ---- */
+body{background:var(--frame)}
+body::before{background:var(--frame)}
+.bar{background:var(--frame)}
+.brand{background:var(--bg)}
+.mark{background:var(--accent);color:var(--accent-ink)}
+.tabs{background:rgba(255,255,255,.08)}
+.tab{color:#CFCDC6;font-weight:500}
+.tab:hover{color:#fff}
+.tab[aria-selected="true"]{background:var(--white);color:var(--ink)}
+.timer{background:var(--bg)}
+.clock{font-weight:300;font-size:22px}
+main{background:var(--bg);border-radius:32px;width:min(2000px,calc(100% - 16px));max-width:none;margin:0 auto 12px;padding-block:22px 60px}
+h1{font-weight:400;letter-spacing:-.02em}
+.hello{font-weight:300;letter-spacing:-.035em}
+h2{font-weight:500}
+.panel,.card,.flow-card,.tl-card,.upnext,.banner,.script,.callout{background:var(--surface)}
+input[type=text],input[type=date],select,textarea{background:var(--white);border-color:var(--line)}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);background:var(--white)}
+.btn{background:var(--white)}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--pill);color:var(--pill-ink)}
+.btn.ghost{background:transparent}
+.seg{background:var(--sunk)}
+.seg button[aria-pressed="true"]{background:var(--white);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.chip{background:var(--white);color:var(--muted)}
+.chip.star{background:var(--accent);color:var(--accent-ink)}
+.chip.stop{background:var(--pill);color:var(--pill-ink)}
+.p-id{background:var(--white)}
+.asked{background:var(--white)}
+.check{background:var(--white)}
+.tip{background:var(--sunk)}
+.tip.live,#stageWarn{background:var(--accent-soft);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.probe-box,.say-box{background:var(--white)}
+.focus-q{font-weight:400;letter-spacing:-.02em}
+.focus-body .line,.callout .line{background:var(--pill);color:var(--accent)}
+.entry{background:var(--white)}
+.entry .k{color:var(--muted)}
+.sugg li{background:var(--white)}
+.sugg li::before{background:var(--ink);box-shadow:0 0 0 3px var(--accent)}
+.rs-row{background:var(--white)}
+.hyp .hid{background:var(--white)}
+.meta span{background:var(--white)}
+.ai-out{background:var(--white)}
+.fc-n{background:var(--white)}
+.fc-time{background:var(--white)}
+.flow-card.hot .fc-n,.flow-card.hot .fc-time{background:rgba(0,0,0,.08);color:var(--ink)}
+.flow-card h2{font-weight:400;font-size:24px}
+.toast{background:var(--pill);color:var(--accent)}
+kbd{background:var(--white)}
+.stuck{background:var(--pill);color:var(--pill-ink)}
+.cap-btns .btn[data-cap="quote"],#saveBtn{background:var(--accent);color:var(--accent-ink)}
+.timer .btn.primary{background:var(--accent);color:var(--accent-ink)}
+/* timeline: thin connector line, white stage pills, dark capsule for the current stage, lime marker */
+.tl-seg{background:var(--white);box-shadow:inset 0 0 0 3px var(--surface)}
+.tl-seg:hover{background:var(--sunk)}
+.tl-seg.cur{background:var(--pill);color:var(--pill-ink)}
+.tl-seg.cur .tl-sn{background:var(--accent);color:var(--accent-ink)}
+.tl-seg.cur .tl-sm{color:#BDBBB3}
+.tl-seg.cur .tl-sm.over{color:#FF9A70;text-decoration:none}
+.tl-sn{background:var(--sunk)}
+.tl-st{font-weight:600}
+.tl-track::before{top:40px;height:1.5px;background:var(--line)}
+.tl-fill{top:40px;height:1.5px;background:var(--ink)}
+.tl-dot i{background:var(--white);border:1.5px solid #A9A79F}
+.tl-dot.star i{border:2px solid var(--ink);box-shadow:0 0 0 3px var(--accent)}
+.tl-dot.done i{background:var(--ink);border-color:var(--ink);box-shadow:none}
+.tl-dot.cur i{width:26px;height:26px;background:var(--accent);border:1.5px solid var(--ink);box-shadow:0 0 0 5px rgba(230,240,60,.35)}
+.tl-dot.cur .tl-id{color:var(--ink);font-weight:800}
+.tl-stop{color:var(--muted);background:var(--surface);font-weight:600}
+.tl-dot.cur .tl-stop{color:var(--ink)}
+.tl-now{width:1.5px;background:var(--ink)}
+.tl-now span{background:var(--pill);color:var(--accent)}
+.lg{border-width:1.5px}
+.lg.star{border:2px solid var(--ink);box-shadow:0 0 0 2px var(--accent)}
+.lg.now{background:var(--ink);width:2px}
+.tl-pace{background:var(--white)}
+.tl-pace.ok{background:var(--white);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.tl-pace.late{background:var(--warn-soft);color:var(--warn)}
+.tl-pace.early{background:var(--accent-soft)}
+.sl-row.cur{background:var(--white);box-shadow:inset 3px 0 0 var(--accent)}
+.sl-row.cur .sl-dot{background:var(--accent);border-color:var(--ink)}
+.demo-dot{border-width:1.5px}
+.demo-dot.star{border:2px solid var(--ink);box-shadow:0 0 0 3px var(--accent)}
+.demo-dot.cur{background:var(--accent);border:1.5px solid var(--ink);box-shadow:0 0 0 4px rgba(230,240,60,.4)}
+.demo-now{background:var(--ink);width:2px}
+.demo-tip{background:var(--accent-soft);border:0;box-shadow:inset 3px 0 0 var(--accent)}
+.bar-t{height:10px;background:var(--white);box-shadow:inset 0 0 0 1px var(--line)}
+.bar-t i{background:var(--ink)}
+.meter{background:var(--sunk)}
+.stage-btn[aria-current="step"]{background:var(--pill);color:var(--pill-ink)}
+
+/* ---- objectives overview ---- */
+.ov{background:var(--pill);color:var(--pill-ink);border-radius:var(--r);padding:26px;margin-top:22px;display:flex;flex-direction:column;gap:20px}
+.ov-label{display:inline-block;background:var(--accent);color:var(--accent-ink);font-size:12.5px;font-weight:700;padding:4px 12px;border-radius:999px}
+.ov-study{font-size:clamp(17px,1.6vw,21px);font-weight:500;line-height:1.4;margin:12px 0 0;max-width:70ch;color:#FFFFFF}
+.ov-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ov-meta span{font-size:13px;background:rgba(255,255,255,.1);color:#E6E5DF;padding:5px 12px;border-radius:999px}
+.ov-meta b{color:var(--accent);font-weight:700;margin-right:4px}
+.ov-rqs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.ov-rqs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ov-rqs{grid-template-columns:1fr}}
+.ov-rq{background:var(--white);color:var(--ink);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.ov-rq-top{display:flex;align-items:center;gap:10px}
+.ov-k{background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:12.5px;padding:4px 10px;border-radius:999px;flex:none}
+.ov-rq h3{font-size:16px;font-weight:700}
+.ov-q{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink);flex:1}
+.ov-sub{border-top:1px solid var(--line);padding-top:10px}
+.ov-sl{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.ov-sub p{margin:0;font-size:13.5px;color:#34332F}
+.ov-ids{display:flex;flex-wrap:wrap;gap:5px}
+.ov-ids span{font-size:12px;font-weight:700;background:var(--sunk);color:var(--ink);padding:2px 9px;border-radius:999px}
+.ov-rule{margin:0;font-size:14px;color:#E6E5DF;max-width:80ch}
+.ov-rule b{color:var(--accent)}
+/* contrast & calm */
+.hello{font-weight:600;letter-spacing:-.03em}
+h1{font-weight:600}
+.focus-q{font-weight:600}
+.flow-card h2{font-weight:600}
+.clock{font-weight:600}
+.lede,.goal,.empty,.foot-note{color:var(--muted)}
+.tab{color:#E2E0D9}
+.tl-stop{color:#46443F}
+.tl-id{color:#46443F}
+
+.nav-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.asked.big{padding:10px 16px;font-size:14px;background:var(--white);box-shadow:inset 0 0 0 1.5px var(--line)}
+.asked.big input{width:18px;height:18px}
+.asked.on{background:var(--ok-soft);color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok)}
+
+/* ---- 4-stage arc ---- */
+.arc-wrap{margin-top:22px}
+.arc-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:6px 16px;margin:0 4px 12px}
+.arc-head h2{font-size:24px;font-weight:600;margin-top:2px}
+.arc{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr);align-items:stretch}
+.arc-arrow{position:relative}
+.arc-arrow::before{content:"";position:absolute;left:3px;right:7px;top:50%;height:1.5px;background:var(--ink)}
+.arc-arrow::after{content:"";position:absolute;right:3px;top:calc(50% - 4px);border:4.5px solid transparent;border-left:7px solid var(--ink);border-right:0}
+.arc-card{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.arc-card.core{box-shadow:inset 0 0 0 2px var(--ink)}
+.arc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.arc-n{width:30px;height:30px;border-radius:50%;background:var(--pill);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:14px}
+.arc-time{background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:13px;padding:4px 12px;border-radius:999px;white-space:nowrap}
+.arc-time em{font-style:normal;font-weight:500;opacity:.75}
+.arc-card h3{font-size:18px;font-weight:700;line-height:1.25}
+.arc-goal{margin:0;font-size:14px;color:#34332F}
+.arc-sub{border-top:1px solid var(--line);padding-top:10px}
+.arc-q{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.arc-q li{font-size:13.5px;line-height:1.45;color:var(--ink)}
+.arc-q b{font-weight:800;margin-right:4px}
+.arc-note{margin:8px 0 0;font-size:12.5px;color:var(--muted)}
+.arc-go{margin-top:auto;align-self:flex-start}
+@media (max-width:1100px){
+  .arc{grid-template-columns:1fr}
+  .arc-arrow{height:26px}
+  .arc-arrow::before{left:50%;right:auto;top:3px;bottom:8px;width:1.5px;height:auto}
+  .arc-arrow::after{left:calc(50% - 4px);right:auto;top:auto;bottom:2px;border:4.5px solid transparent;border-top:7px solid var(--ink);border-bottom:0}
+}
+
+/* ---- scaling: large screens grow, phones never zoom on focus ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-height:100vh;min-height:100dvh}
+@media (min-width:1700px){html{zoom:1.12}}
+@media (min-width:2200px){html{zoom:1.3}}
+@media (max-width:900px),(pointer:coarse){input[type=text],input[type=date],input[type=password],select,textarea{font-size:16px}}
+input[type=password]{width:100%;background:var(--white);border:1px solid var(--line);border-radius:var(--r-s);padding:10px 14px;min-width:0}
+.team-box{display:flex;flex-direction:column;gap:8px;background:var(--white);border-radius:var(--r-s);padding:14px;margin-top:14px}
+
+.timer .btn.reset{background:transparent;color:var(--muted);padding:6px 10px}
+.timer .btn.reset:hover{background:var(--sunk);color:var(--ink)}
+.timer .btn.reset.armed{background:var(--warn-soft);color:var(--warn)}
+</style>
+</head>
+<body>
+
+<header class="bar wrap">
+  <div class="bar-in">
+    <div class="brand"><span class="mark" aria-hidden="true">E</span><span class="brand-t"><b>Interview Field Guide</b><span class="sub" id="sessLine">ELISAVA Research Module · New interview</span></span></div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" data-view="start" id="tab-start">How it works</button>
+      <button class="tab" role="tab" data-view="setup" id="tab-setup">1 Setup</button>
+      <button class="tab" role="tab" data-view="interview" id="tab-interview">2 Interview</button>
+      <button class="tab" role="tab" data-view="review" id="tab-review">3 Review & export</button>
+      <button class="tab" role="tab" data-view="library" id="tab-library">Saved</button>
+    </nav>
+    <div class="timer">
+      <span class="clock" id="clock" aria-live="off">00:00</span>
+      <button class="btn small primary" id="timerBtn">Start</button>
+      <button class="btn small reset" id="timerReset" title="Reset the timer to 00:00" aria-label="Reset timer">Reset</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="view-start"></section>
+  <section class="view" id="view-setup" hidden></section>
+  <section class="view" id="view-interview" hidden></section>
+  <section class="view" id="view-review" hidden></section>
+  <section class="view" id="view-library" hidden></section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+if(location.protocol==="http:"&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) location.replace("https:"+location.href.slice(5));
+/* ---------------- guide content ---------------- */
+const RQS = {
+  RQ1:"Triggers & goals", RQ2:"Fit & continuity", RQ3:"Choosing & valuing", RQ4:"Applying & proving"
+};
+const HYPS = [
+  ["H1","Learning is triggered more by concrete work events (new role, client request, AI) than by long-term career plans."],
+  ["H2","“No time” is often a proxy: dropping out comes from low energy and no immediate application more than from the schedule."],
+  ["H3","For creatives, portfolio-ready outputs and contacts matter more than certificates."],
+  ["H4","People find it hard to judge course quality and rely on peers and visible work of alumni or teachers."],
+  ["H5","Employer support for learning exists on paper but is rarely used or known; freelancers carry the cost alone."]
+];
+const STAGES = [
+  { id:"s1", n:"1", title:"Warm-up & Rapport", plan:5,
+    goal:"Set ground rules, confirm consent, build psychological safety.",
+    script:[
+      "“Thanks a lot for your time. I'm [name], a student of the Master in Business Design. We're doing a project about how people who work in creative fields keep learning while they work. There are no right or wrong answers, and we're not testing you or selling anything. It takes about 50 minutes. Is it OK if I record? It's only for our notes; everything is anonymised. You can skip any question or stop whenever you want.”",
+      "ES: “Muchas gracias por tu tiempo. Soy [nombre], estudiante del Máster en Business Design. Estamos haciendo un proyecto sobre cómo las personas que trabajan en sectores creativos siguen aprendiendo mientras trabajan. No hay respuestas correctas ni incorrectas, y no te estamos evaluando ni vendiendo nada. Durará unos 50 minutos. ¿Te parece bien que grabe? Es solo para nuestras notas y lo anonimizaremos todo. Puedes saltarte cualquier pregunta o parar cuando quieras.”"
+    ],
+    prompts:[
+      {id:"1.1",en:"Tell me a bit about yourself and what you do these days.",es:"Cuéntame un poco sobre ti y a qué te dedicas ahora mismo.",probe:"Role, employed or freelance, type of projects, years in the field.",rq:[],tip:"Keep it light. Mirror one of their words back to show you're listening."},
+      {id:"1.2",en:"What has kept you busiest at work over the last few weeks?",es:"¿Qué te ha tenido más ocupado/a en el trabajo estas últimas semanas?",probe:"Concrete and easy. Note tone, workload, current pressures.",rq:["RQ2"],tip:"Workload you hear now explains their energy in Stage 3. Note it."}
+    ]},
+  { id:"s2", n:"2", title:"Broad Context & Life Story", plan:12,
+    goal:"Understand daily routines, career background and general mindset before going into specific learning stories.",
+    prompts:[
+      {id:"2.1",star:1,en:"Walk me through how you got from your studies to the work you do today. Which moments changed your direction?",es:"Cuéntame cómo llegaste desde tus estudios hasta el trabajo que haces hoy. ¿Qué momentos cambiaron tu rumbo?",probe:"Turning points, who influenced them, planned vs unplanned moves, first specialization.",rq:["RQ1"],tip:"Ask “what happened next?” at each turning point. Don't jump to learning yet."},
+      {id:"2.2",star:1,en:"Walk me through your last working day, from when you woke up until you switched off. Where were the free moments, if any?",es:"Repasemos tu último día de trabajo, desde que te levantaste hasta que desconectaste. ¿Hubo algún momento libre?",probe:"Energy across the day, evenings, weekends, commute, how typical that day was, irregular weeks.",rq:["RQ2"],tip:"Push for the real last day, not a typical one. Ask about the evening after work."},
+      {id:"2.3",en:"Think of a skill you use a lot in your work today. How did you learn it?",es:"Piensa en una habilidad que usas mucho hoy en tu trabajo. ¿Cómo la aprendiste?",probe:"School vs on the job vs tutorials vs colleagues vs AI tools. Who taught them.",rq:["RQ3"],tip:"If they say “YouTube” or “on the job”, ask for one specific moment."},
+      {id:"2.4",en:"Compared to a year ago, what has changed in what is expected from you at work?",es:"Comparado con hace un año, ¿qué ha cambiado en lo que se espera de ti en el trabajo?",probe:"New tools (AI), new responsibilities, clients, team changes. Feeling of falling behind or growing.",rq:["RQ1"],tip:"Listen for AI or new tools. Ask how they found out they needed it."}
+    ]},
+  { id:"s3", n:"3", title:"Deep Dive & Specific Events", plan:25, timeline:true,
+    goal:"Uncover stories of decision triggers, barriers, choices and friction points through one concrete learning journey.",
+    prompts:[
+      {id:"3.1",path:"A",star:1,en:"Tell me about the moment you felt you needed to learn this. What was happening at that time?",es:"Cuéntame el momento en que sentiste que necesitabas aprender esto. ¿Qué estaba pasando en ese momento?",probe:"Who or what revealed the gap, emotions, urgency, work event behind it. Stop: TRIGGER.",rq:["RQ1"],tip:"Write the trigger on the timeline in their own words. Ask how it felt."},
+      {id:"3.2",path:"A",en:"What was the very first thing you did about it?",es:"¿Qué fue lo primero que hiciste al respecto?",probe:"Google, Instagram, colleagues, ChatGPT, school websites, how long the search took. Stop: SEARCH.",rq:["RQ3"],tip:"Ask how long the search took and where they almost gave up."},
+      {id:"3.3",path:"A",star:1,en:"Walk me through how you decided on that option. What else did you look at, and what made you choose it?",es:"Explícame cómo te decidiste por esa opción. ¿Qué otras miraste y qué hizo que eligieras esa?",probe:"Trust signals (teachers, alumni work, reviews, brand), schedule, format, certificate, who they asked. Stop: CHOICE.",rq:["RQ3"],tip:"Ask what they compared side by side. Trust signals are the core of RQ3."},
+      {id:"3.4",path:"A",en:"How did you decide it was worth paying for, or why a free option? Who paid in the end?",es:"¿Cómo decidiste que merecía la pena pagarlo, o por qué una opción gratuita? ¿Quién lo pagó al final?",probe:"Price anchors, employer or subsidised training, instalments, what they gave up.",rq:["RQ3","RQ4"],tip:"Never say “expensive”. Let them name how the price felt."},
+      {id:"3.5",path:"A",star:1,en:"Tell me about a normal week while you were doing it. Walk me through one evening when you had to combine work and study.",es:"Cuéntame cómo era una semana normal mientras lo hacías. Descríbeme una tarde en la que tuviste que combinar trabajo y estudio.",probe:"Time of day, place, device, what got sacrificed (sleep, social life, projects), help from others. Stops: START, DURING.",rq:["RQ2"],tip:"Ask for one specific evening: time, place, device, what they gave up."},
+      {id:"3.6",path:"A",star:1,en:"What was the hardest moment in that experience? What happened next?",es:"¿Cuál fue el momento más difícil de esa experiencia? ¿Qué pasó después?",probe:"If they stopped: what was going on at work or in life that week. If they finished: what kept them going. Stop: END or STOP.",rq:["RQ2"],tip:"Silence works best here. Count to 5 after they answer."},
+      {id:"3.7",path:"A",en:"Tell me about the people around that learning: classmates, teachers, colleagues. When did someone make a difference?",es:"Háblame de las personas que estuvieron alrededor de esa formación: compañeros, profesores, colegas. ¿En qué momento alguien marcó la diferencia?",probe:"Group vs alone, feedback, accountability, contacts that lasted.",rq:["RQ2"],tip:"Ask for one good and one bad example."},
+      {id:"3.8",path:"A",star:1,en:"When was the first time you used what you learned in real work? What happened?",es:"¿Cuándo fue la primera vez que usaste lo aprendido en un trabajo real? ¿Qué pasó?",probe:"Time lag, reaction of boss or client, what did not transfer. Stop: AFTER.",rq:["RQ4"],tip:"Find the time lag between finishing and first real use."},
+      {id:"3B.1",path:"B",star:1,en:"Tell me about the last time you seriously considered doing a course or program. What happened?",es:"Cuéntame la última vez que te planteaste en serio hacer un curso o programa. ¿Qué pasó?",probe:"At which step it stopped (search, choice, price, timing), what they did instead.",rq:["RQ2","RQ3"],tip:"Find the exact step where it stopped: search, choice, price or timing."},
+      {id:"3B.2",path:"B",star:1,en:"The last time you ran into something at work you didn't know how to do, what was the very first thing you did?",es:"La última vez que te encontraste en el trabajo algo que no sabías hacer, ¿qué fue lo primero que hiciste?",probe:"YouTube, AI tools, a colleague, trial and error. Speed and “good enough”.",rq:["RQ3"],tip:"Ask them to show the tutorial or AI chat if they can."},
+      {id:"3B.3",path:"B",en:"How did you know that solution was good enough?",es:"¿Cómo supiste que esa solución era suficiente?",probe:"Their own quality bar, feedback from others, when informal learning stops being enough.",rq:["RQ3"],tip:"Ask who else judged the result."},
+      {id:"3.9",path:"both",star:1,en:"The last time you applied for a job or presented yourself to a client, how did you show what you can do?",es:"La última vez que te presentaste a un trabajo o a un cliente, ¿cómo demostraste lo que sabes hacer?",probe:"Portfolio, certificate, recommendation, test project. Did anyone ever ask about a course?",rq:["RQ4"],tip:"Ask whether anyone ever asked about a course or certificate."},
+      {id:"3.10",path:"both",en:"Tell me about the last conversation you had at work about training or development.",es:"Cuéntame la última conversación que tuviste en el trabajo sobre formación o desarrollo.",probe:"Time, budget, awareness of training hours (20 h right, FUNDAE). Freelancers: who invests in you?",rq:["RQ4"],tip:"Freelancers: ask who invests in their development."}
+    ]},
+  { id:"s4", n:"4", title:"Reflection & Wrap-Up", plan:8,
+    goal:"Give space for unprompted thoughts and final participant insights.",
+    prompts:[
+      {id:"4.1",star:1,en:"Looking back at everything we talked about, which moment stands out most for you, and why?",es:"Mirando todo lo que hemos hablado, ¿qué momento te parece más importante y por qué?",probe:"What they choose to highlight is itself data.",rq:["RQ1","RQ2","RQ3","RQ4"],tip:"Don't summarise for them. Let them choose."},
+      {id:"4.2",en:"If a friend in your situation asked you for advice about learning while working, what would you tell them?",es:"Si un amigo/a en tu situación te pidiera consejo sobre formarse mientras trabaja, ¿qué le dirías?",probe:"Projective: reveals values and hard-won lessons.",rq:["RQ2","RQ3"],tip:"Ladder once: “why is that important to you?”"},
+      {id:"4.3",en:"Is there anything about how you learn that I didn't ask, but should have?",es:"¿Hay algo sobre cómo aprendes que no te he preguntado y debería haberte preguntado?",probe:"Unexpected themes.",rq:[],tip:"Stay silent and wait."}
+    ],
+    closing:[
+      "“That was really helpful, thank you. We'll anonymise everything and use it only for this project. In a few weeks we'll test some first ideas: would it be OK to contact you again?”",
+      "ES: “Nos has ayudado muchísimo, gracias. Lo anonimizaremos todo y solo lo usaremos para este proyecto. En unas semanas probaremos algunas ideas: ¿te parece bien que te volvamos a contactar?”"
+    ]}
+];
+const ALL = STAGES.flatMap(s=>s.prompts.map(p=>({...p,stage:s.id})));
+const DEBRIEF = [
+  ["d1","Top 3 takeaways from this person"],
+  ["d2","Which RQ did this interview inform most? What did we learn that is new?"],
+  ["d3","One quote that would make a stakeholder pay attention"],
+  ["d4","What should we change in the guide for the next interview?"]
+];
+const CHECKS = [
+  ["c1","Screener done and participant fits the sampling matrix"],
+  ["c2","Consent form signed or verbal consent recorded"],
+  ["c3","Recording on two devices (main + backup)"],
+  ["c4","Timeline sheet or board ready (TRIGGER → AFTER)"],
+  ["c5","Phone on silent, 60 minutes blocked"]
+];
+
+/* ---------------- state ---------------- */
+const KEY="ifg-draft-v1";
+function blank(){
+  return { id: "iv-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    interviewer:"", title:"", date:new Date().toISOString().slice(0,10), code:"", profile:"", setting:"In person", language:"ES",
+    noteTaker:"", path:"A", lang:"both", checks:{}, prompts:{}, log:[], hyps:{}, debrief:{}, recontact:"",
+    elapsed:0, stageTime:{}, stage:"s1", cur:"", seen:{}, ai:"", createdAt:null, updatedAt:null, savedAt:null };
+}
+let S = blank();
+try{ const d=JSON.parse(localStorage.getItem(KEY)||"null"); if(d&&d.id) S=Object.assign(blank(),d); }catch(e){}
+let view="setup", running=false, lastTick=0, db=null, dlCap=null, sampleCap=null, userCap=null, myId=null, library=[], libState="loading";
+let saveTimer=null;
+function persist(){ clearTimeout(saveTimer); saveTimer=setTimeout(()=>{ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} },300); }
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=sec=>{sec=Math.max(0,Math.floor(sec));const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")};
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2600)}
+const P=id=>S.prompts[id]||(S.prompts[id]={asked:false,note:""});
+const visible=p=>!p.path||p.path==="both"||p.path===S.path;
+
+/* ---------------- tips engine ---------------- */
+function liveTips(text){
+  const t=(text||"").toLowerCase(), out=[];
+  if(/\b(usually|always|normally|generally|typically|would|siempre|normalmente|suelo|solemos|en general)\b/.test(t))
+    out.push("<b>Generalising.</b> Bring them back: “Tell me about the last time that happened.”");
+  if(/no time|not enough time|too busy|no tengo tiempo|sin tiempo|muy ocupad/.test(t))
+    out.push("<b>“No time” heard.</b> Ladder it: “What did you mean by no time? What happened that week?”");
+  if(/expensive|price|cost|money|caro|precio|dinero|pagar/.test(t))
+    out.push("<b>Money came up.</b> Ask who paid and how they decided it was worth it, without saying “expensive”.");
+  if(/certificat|diploma|t[ií]tulo|degree|credential/.test(t))
+    out.push("<b>Credentials mentioned.</b> Ask: “When did anyone last ask to see it?” (RQ4, H3)");
+  if(/\b(ai|chatgpt|claude|gpt|ia|youtube|tutorial)\b/.test(t))
+    out.push("<b>Informal or AI learning.</b> Ask them to show it, and how they knew the answer was good enough.");
+  if(/boss|manager|company|empresa|jefe|cliente|client/.test(t))
+    out.push("<b>Employer or client involved.</b> Probe support: time, budget, recognition.");
+  if(/drop|quit|stopped|gave up|dej[eé]|abandon/.test(t))
+    out.push("<b>Dropout story.</b> Pin the moment: “What was going on at work or at home that week?”");
+  return out.slice(0,3);
+}
+function renderLive(id){
+  const box=document.getElementById("live-"+id); if(!box) return;
+  const p=P(id), tips=liveTips(p.note);
+  if(p.asked && (p.note||"").trim().length>0 && (p.note||"").trim().length<40) tips.push("<b>Short answer.</b> Try the 5-second silence, then “Tell me more about that…”");
+  box.innerHTML=tips.map(t=>`<div class="tip live">${t}</div>`).join("");
+}
+
+/* ---------------- coverage & suggestions ---------------- */
+function coverage(){
+  const res={}; Object.keys(RQS).forEach(k=>res[k]={asked:0,total:0});
+  ALL.filter(visible).forEach(p=>p.rq.forEach(r=>{res[r].total++; if(P(p.id).asked) res[r].asked++;}));
+  return res;
+}
+function totals(){
+  const v=ALL.filter(visible); return {asked:v.filter(p=>P(p.id).asked).length,total:v.length,
+    missedStars:v.filter(p=>p.star&&!P(p.id).asked)};
+}
+function suggestions(){
+  const out=[], cov=coverage(), tot=totals();
+  Object.entries(cov).forEach(([k,c])=>{ if(c.total && c.asked/c.total<.5){
+    const stars=ALL.filter(p=>visible(p)&&p.star&&p.rq.includes(k)).map(p=>p.id).join(", ");
+    out.push(`${k} ${RQS[k]} is thin in this interview (${c.asked}/${c.total} prompts). In the next one, prioritise ${stars||"its prompts"} early.`);}});
+  if(tot.missedStars.length) out.push(`Priority prompts not covered: ${tot.missedStars.map(p=>p.id).join(", ")}. Mark them as gaps in the debrief so synthesis knows.`);
+  const q=S.log.filter(e=>e.kind==="quote").length;
+  if(q===0) out.push("No hot quotes captured. Pull 3 verbatim lines with timestamps from the recording before writing the transcript.");
+  else if(q<3) out.push(`Only ${q} hot quote${q>1?"s":""}. Add more from the recording while memory is fresh.`);
+  if(!S.log.some(e=>e.kind==="nonverbal")) out.push("No non-verbal cues noted. Next time, mark sighs, pauses and laughter: they show where the emotion is.");
+  STAGES.forEach(s=>{ const t=(S.stageTime[s.id]||0)/60; if(t>s.plan*1.3) out.push(`Stage ${s.n} ran ${Math.round(t)} min against a plan of ${s.plan}. Trim or tighten it next time.`);});
+  const general=ALL.filter(p=>/\b(usually|always|normally|generally|siempre|normalmente|suelo)\b/i.test(P(p.id).note)).length;
+  if(general>=2) out.push(`Generalisations showed up in ${general} answers. Ask for “the last time” sooner.`);
+  if(S.path==="B") out.push("Path B participant: in synthesis, compare with Path A stories and note at which step the decision stopped.");
+  const hypDone=Object.values(S.hyps).filter(h=>h&&h.v).length;
+  if(hypDone<HYPS.length) out.push(`Rate all hypotheses (${hypDone}/${HYPS.length} done). Look for evidence against them too.`);
+  if(!S.recontact) out.push("Record whether the participant agreed to be recontacted for the sprint.");
+  out.push("Upload the audio, transcript and timeline photo within 48 hours, with names removed.");
+  return out;
+}
+
+/* ---------------- views ---------------- */
+const RESCUE=[
+  ["I lost my place","Look for the big yellow dot on the timeline. Click any point to jump there."],
+  ["We're running late","Follow the pace chip. Ask only the priority questions (yellow halo) and move on."],
+  ["Short or vague answer","Stay quiet and count to 5. Then: “Tell me more about that…”"],
+  ["They say “usually” or “always”","Bring them back: “Tell me about the last time that happened.”"],
+  ["They went off-topic","Let them finish, then: “Earlier you mentioned… can we go back to that?”"],
+  ["I forgot to start the timer","Press Start now. The timer is for pacing, the recording is the real record."],
+  ["My mind went blank","Read the big question out loud as it is. That's what it's there for."]
+];
+
+const RQ_DETAIL=[
+  {k:"RQ1",t:"Triggers & goals",q:"What moments in creative professionals' working lives trigger a need to learn, and what do they hope learning will change for them?",listen:"Concrete events (new role, client brief, AI changing tasks), emotions, the hoped-for after-state."},
+  {k:"RQ2",t:"Fit & continuity",q:"How do creative professionals fit learning into their real working weeks, and what helps or stops them from starting, continuing and finishing?",listen:"Time windows, energy, deadlines, freelance irregularity, the exact moment of dropping out, peers."},
+  {k:"RQ3",t:"Choosing & valuing",q:"How do they choose between formal programs, platforms, informal and AI-supported learning, and judge whether it is worth their time and money?",listen:"Where they searched, what they compared, trust signals, price feelings, who paid."},
+  {k:"RQ4",t:"Applying & proving",q:"How do they apply what they learn and make it visible to employers and clients, and what role do employers, portfolios and credentials play?",listen:"First use at work, recognition, portfolio vs certificate, employer support (time, budget)."}
+];
+function rqWhere(k){ return ALL.filter(p=>p.stage!=="s4"&&p.rq.includes(k)).map(p=>p.id); }
+function overviewHTML(){
+  return `<section class="ov">
+    <div class="ov-head">
+      <div class="ov-label">What we are here to learn</div>
+      <p class="ov-study">¿Cómo puede ELISAVA ofrecer formatos de aprendizaje que se adapten a los horarios laborales, los ritmos y las necesidades de los profesionales creativos en España de entre 21 y 45 años?</p>
+      <div class="ov-meta"><span><b>Who</b> creative professionals, 21-45, working in Spain</span><span><b>Focus</b> fitting learning into a creative working life</span><span><b>Method</b> semi-structured interview, about 50 min</span></div>
+    </div>
+    <div class="ov-rqs">${RQ_DETAIL.map(r=>`<article class="ov-rq">
+        <div class="ov-rq-top"><span class="ov-k">${r.k}</span><h3>${r.t}</h3></div>
+        <p class="ov-q">${esc(r.q)}</p>
+        <div class="ov-sub"><span class="ov-sl">Listen for</span><p>${esc(r.listen)}</p></div>
+        <div class="ov-sub"><span class="ov-sl">Asked through</span><div class="ov-ids">${rqWhere(r.k).map(i=>`<span>${esc(i)}</span>`).join("")}</div></div>
+      </article>`).join("")}</div>
+    <p class="ov-rule"><b>Research questions are for us, not for them.</b> Never read these out. Ask the questions on screen: they turn each objective into a story about a specific past moment.</p>
+  </section>`;
+}
+
+const ARC={s1:{range:"5-10 min",key:["1.1","1.2"]},s2:{range:"10-15 min",key:["2.1","2.2","2.4"]},s3:{range:"20-25 min",key:["3.1","3.3","3.5","3.6","3.8"]},s4:{range:"5-10 min",key:["4.1","4.3"]}};
+function arcHTML(){
+  return `<section class="arc-wrap">
+    <div class="arc-head"><div><div class="eyebrow">The interview at a glance</div><h2>The 4-stage arc</h2></div><p class="empty">Time ranges from the class guide, with our planned minutes. Open a stage to jump straight to it.</p></div>
+    <div class="arc">${STAGES.map((st,i)=>{
+      const rqs=[...new Set(st.prompts.flatMap(p=>p.rq))].sort();
+      const keys=ARC[st.id].key.map(id=>ALL.find(p=>p.id===id)).filter(Boolean);
+      return `${i?'<div class="arc-arrow" aria-hidden="true"></div>':""}
+      <article class="arc-card ${i===2?"core":""}">
+        <div class="arc-top"><span class="arc-n">${st.n}</span><span class="arc-time">${ARC[st.id].range} <em>· plan ${st.plan}</em></span></div>
+        <h3>${st.title}</h3>
+        <p class="arc-goal">${esc(st.goal)}</p>
+        <div class="arc-sub"><span class="ov-sl">Objectives</span><div class="ov-ids">${rqs.length?rqs.map(r=>`<span title="${esc(RQS[r])}">${r} ${esc(RQS[r])}</span>`).join(""):"<span>Rapport, consent</span>"}</div></div>
+        <div class="arc-sub"><span class="ov-sl">Key questions</span><ol class="arc-q">${keys.map(p=>`<li><b>${esc(p.id)}</b> ${esc(p.en)}</li>`).join("")}</ol>
+          ${st.timeline?'<p class="arc-note">Uses the journey timeline: Trigger → Search → Choice → Start → During → End → After. Path B if nothing structured in 2 years.</p>':""}</div>
+        <button class="btn small arc-go" data-arcjump="${st.id}">Open stage ${st.n} →</button>
+      </article>`}).join("")}</div>
+  </section>`;
+}
+function hasDraft(){ return !!(S.title||S.interviewer||S.elapsed>0||Object.keys(S.prompts).length); }
+function rescueHTML(){ return `<div class="rescue">${RESCUE.map(([a,b])=>`<div class="rs-row"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join("")}</div>`; }
+function renderStart(){
+  const draft=hasDraft();
+  $("#view-start").innerHTML=`
+  <div class="start-hero">
+    <div><div class="eyebrow">ELISAVA Design Research Challenge · Research Module</div>
+      <h1 class="hello">Ready for your interview?</h1>
+      <p class="lede">This tool walks you through the discussion guide one question at a time and keeps your notes safe. You only need to remember one thing: <b>the big question on screen is the one to ask next.</b></p></div>
+    <div class="row">
+      ${draft?`<button class="btn primary big" data-goto="${S.title&&S.interviewer?"interview":"setup"}">Continue ${S.code?esc(S.code):"draft"}${S.title?" · "+esc(S.title.slice(0,32)):""} →</button><button class="btn big" id="newFromStart">Start a new interview</button>`
+             :`<button class="btn primary big" data-goto="setup">Start an interview →</button>`}
+    </div>
+    <p class="status" id="startStatus"></p>
+  </div>
+
+  ${overviewHTML()}
+  ${arcHTML()}
+
+  <div class="flow">
+    <article class="flow-card hot">
+      <div class="fc-top"><span class="fc-n">1</span><span class="fc-time">2 min · before</span></div>
+      <h2>Set up</h2>
+      <ul><li>Your name, a title, the date and the participant code.</li><li>Tick the 5 pre-flight checks.</li><li>Start both recorders.</li></ul>
+    </article>
+    <article class="flow-card">
+      <div class="fc-top"><span class="fc-n">2</span><span class="fc-time">50 min · during</span></div>
+      <h2>Interview</h2>
+      <ul><li>Press <b>Start</b> on the timer when you begin.</li><li>Ask the big question. Type key words in Notes.</li><li>Press <b>Next</b>. It ticks the question for you once you wrote something.</li></ul>
+    </article>
+    <article class="flow-card">
+      <div class="fc-top"><span class="fc-n">3</span><span class="fc-time">anytime · during</span></div>
+      <h2>Capture</h2>
+      <ul><li>Heard a great line? Type it on the right and press <b>Hot quote</b>.</li><li>A sigh, a laugh, a long pause: <b>Non-verbal</b>.</li><li>Your own thought: <b>Memo</b>. Each gets a time stamp.</li></ul>
+    </article>
+    <article class="flow-card">
+      <div class="fc-top"><span class="fc-n">4</span><span class="fc-time">15 min · right after</span></div>
+      <h2>Review & save</h2>
+      <ul><li>Read the tips, rate the hypotheses, fill the debrief.</li><li><b>Save to team database</b>, then <b>Download PDF</b>.</li><li>Upload audio and transcript within 48 h.</li></ul>
+    </article>
+  </div>
+
+  <div class="start-grid">
+    <section class="panel">
+      <h2>Reading the screen</h2>
+      <div class="legend-rows">
+        <div class="lr"><span class="demo-dot cur"></span><span><b>Big yellow dot</b> · where you are now</span></div>
+        <div class="lr"><span class="demo-dot done"></span><span><b>Black dot</b> · asked</span></div>
+        <div class="lr"><span class="demo-dot star"></span><span><b>Dot with a yellow halo</b> · priority: ask this even when short on time</span></div>
+        <div class="lr"><span class="demo-dot act"></span><span><b>Square</b> · something to read or do (script, path choice)</span></div>
+        <div class="lr"><span class="demo-now"></span><span><b>Thin black line</b> · the timer; the chip above says if you're on pace</span></div>
+        <div class="lr"><span class="demo-tip"></span><span><b>Yellow-edged tip</b> · appears while you type when an answer needs a follow-up</span></div>
+      </div>
+      <h3 style="margin-top:18px">Shortcuts</h3>
+      <div class="keys"><span><kbd>Alt</kbd> + <kbd>→</kbd> next</span><span><kbd>Alt</kbd> + <kbd>←</kbd> back</span><span>Click any point to jump</span></div>
+    </section>
+    <section class="panel">
+      <h2>If you get stuck</h2>
+      <p class="empty" style="margin:4px 0 12px">Also one click away during the interview: the <b>Stuck?</b> button on the timeline.</p>
+      ${rescueHTML()}
+    </section>
+  </div>
+  <p class="foot-note">Drafts are kept in this browser automatically, so closing the tab does not lose your notes. Nothing reaches the team until you press Save.</p>`;
+}
+
+function setTab(v){
+  view=v; document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.view===v));
+  ["start","setup","interview","review","library"].forEach(k=>$("#view-"+k).hidden=k!==v);
+  ({start:renderStart,setup:renderSetup,interview:renderInterview,review:renderReview,library:renderLibrary})[v]();
+  window.scrollTo({top:0});
+}
+function sessLine(){ $("#sessLine").textContent=[S.title||"New interview",S.code,S.interviewer,S.date].filter(Boolean).join(" · "); }
+
+function renderSetup(){
+  const codes=["","P01","P02","P03","P04","P05","P06","P07","P08","P09","P10","Pilot"];
+  $("#view-setup").innerHTML=`
+  <div class="eyebrow">ELISAVA Design Research Challenge · Research Module</div>
+  <h1 style="margin-top:4px">Set up the interview</h1>
+  <p class="lede">Fill in who, what and when, run the pre-flight checklist, then start the timer and move to the guide. Your work is kept in this browser as a draft until you save it.</p>
+  <div class="setup">
+    <div class="panel stack">
+      <h2>Session</h2>
+      <div class="fields">
+        <div class="field"><label class="lab" for="f-interviewer">Interviewer name <span class="req">*</span></label><input type="text" id="f-interviewer" data-f="interviewer" value="${esc(S.interviewer)}" placeholder="e.g. Jakub"></div>
+        <div class="field"><label class="lab" for="f-date">Date <span class="req">*</span></label><input type="date" id="f-date" data-f="date" value="${esc(S.date)}"></div>
+        <div class="field wide"><label class="lab" for="f-title">Interview title <span class="req">*</span></label><input type="text" id="f-title" data-f="title" value="${esc(S.title)}" placeholder="e.g. Recent graduate, brand designer, Barcelona"></div>
+        <div class="field"><label class="lab" for="f-code">Participant code</label><select id="f-code" data-f="code">${codes.map(c=>`<option ${c===S.code?"selected":""} value="${c}">${c||"Choose…"}</option>`).join("")}</select></div>
+        <div class="field"><label class="lab" for="f-note">Note-taker</label><input type="text" id="f-note" data-f="noteTaker" value="${esc(S.noteTaker)}" placeholder="Optional"></div>
+        <div class="field wide"><label class="lab" for="f-profile">Target profile (from the assignment table)</label><input type="text" id="f-profile" data-f="profile" value="${esc(S.profile)}" placeholder="e.g. 0-3 yrs, employed, graphic & brand, did a course in the last 12 months"></div>
+        <div class="field"><label class="lab" for="f-setting">Setting</label><select id="f-setting" data-f="setting">${["In person","Video call"].map(o=>`<option ${o===S.setting?"selected":""}>${o}</option>`).join("")}</select></div>
+        <div class="field"><label class="lab" for="f-language">Interview language</label><select id="f-language" data-f="language">${["ES","EN","CA"].map(o=>`<option ${o===S.language?"selected":""}>${o}</option>`).join("")}</select></div>
+      </div>
+      <div class="stack" style="gap:8px">
+        <span class="lab">Show prompts in</span>
+        <div class="seg" role="group" aria-label="Prompt language">${[["both","English + Spanish"],["en","English"],["es","Spanish"]].map(([k,l])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}">${l}</button>`).join("")}</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Pre-flight checklist</h2>
+      <div style="margin-top:8px">${CHECKS.map(([k,l])=>`<label class="check"><input type="checkbox" id="chk-${k}" data-check="${k}" ${S.checks[k]?"checked":""}><span>${l}</span></label>`).join("")}</div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn primary" id="goInterview">Open the guide</button>
+        <button class="btn ghost" id="newIv">Start a new interview</button>
+      </div>
+      <p class="status" id="setupStatus"></p>
+      ${(!db&&api)?teamBoxHTML(""):""}
+    </div>
+  </div>`;
+}
+
+function promptHTML(p){
+  const st=P(p.id), lang=S.lang;
+  return `<article class="prompt ${st.asked?"done":""}" id="pr-${esc(p.id)}">
+    <div class="p-top">
+      <span class="p-id">${esc(p.id)}</span>
+      <div>
+        ${lang!=="es"?`<p class="p-q">${esc(p.en)}</p>`:""}
+        ${lang!=="en"?`<p class="${lang==="es"?"p-q":"p-es es"}">${esc(p.es)}</p>`:""}
+        <div class="chips">${p.star?'<span class="chip star">Priority</span>':""}${p.rq.map(r=>`<span class="chip">${r}</span>`).join("")}</div>
+      </div>
+      <label class="asked"><input type="checkbox" id="ask-${esc(p.id)}" data-ask="${esc(p.id)}" ${st.asked?"checked":""}>Asked</label>
+    </div>
+    <div class="p-body">
+      <div class="field"><label class="lab" for="note-${esc(p.id)}">Notes</label><textarea id="note-${esc(p.id)}" data-note="${esc(p.id)}" rows="4" placeholder="What they said, in their words. Timestamps help.">${esc(st.note)}</textarea></div>
+      <div>
+        <p class="probe"><b>Probe / listen for:</b> ${esc(p.probe)}</p>
+        <div class="tips"><div class="tip"><b>Tip:</b> ${esc(p.tip)}</div><div class="tips" id="live-${esc(p.id)}"></div></div>
+      </div>
+    </div>
+  </article>`;
+}
+/* ---- interview: timeline + focus ---- */
+const STOPS={"3.1":"Trigger","3.2":"Search","3.3":"Choice","3.4":"Choice","3.5":"Start · During","3.6":"End / Stop","3.7":"During","3.8":"After","3.9":"Prove","3.10":"Support","3B.1":"Stopped at","3B.2":"Workaround","3B.3":"Good enough"};
+const TOTAL=STAGES.reduce((a,s)=>a+s.plan,0);
+const STAGE_START={}; (()=>{let t=0; STAGES.forEach(s=>{STAGE_START[s.id]=t; t+=s.plan;});})();
+function steps(){
+  const out=[];
+  STAGES.forEach(s=>{
+    const list=[];
+    if(s.script) list.push({kind:"script",id:s.id+"-open",title:"Opening script",lines:s.script});
+    if(s.timeline) list.push({kind:"setup",id:s.id+"-tl",title:"Set up the timeline and choose the path"});
+    s.prompts.filter(visible).forEach(p=>list.push({kind:"prompt",id:p.id,p}));
+    if(s.closing) list.push({kind:"closing",id:s.id+"-close",title:"Closing script and recontact",lines:s.closing});
+    list.forEach((st,i)=>{ st.stage=s.id; st.at=STAGE_START[s.id]+(i+.5)/list.length*s.plan; out.push(st); });
+  });
+  return out;
+}
+function curStep(){ const all=steps(); let st=all.find(x=>x.id===S.cur); if(!st){ st=all.find(x=>x.stage===S.stage)||all[0]; S.cur=st.id; } return {all,st,i:all.indexOf(st)}; }
+function stepDone(st){ if(st.kind==="prompt") return P(st.id).asked; if(st.kind==="closing") return !!S.recontact; return !!(S.seen&&S.seen[st.id]); }
+function goStep(id){ const {all}=curStep(); const prev=all.find(x=>x.id===S.cur);
+  if(prev&&prev.kind!=="prompt"){ S.seen=S.seen||{}; S.seen[prev.id]=true; }
+  const st=all.find(x=>x.id===id); if(!st) return; S.cur=id; S.stage=st.stage; persist(); renderInterview(); }
+const shortQ=st=>st.kind==="prompt"?(S.lang==="es"?st.p.es:st.p.en):st.title;
+
+function timelineHTML(all,cur){
+  const pct=m=>Math.min(100,Math.max(0,m/TOTAL*100));
+  const segs=STAGES.map(s=>{const isCur=s.id===cur.stage, t=S.stageTime[s.id]||0, ps=all.filter(x=>x.stage===s.id), d=ps.filter(stepDone).length;
+    return `<button class="tl-seg ${isCur?"cur":""}" data-stagejump="${s.id}" style="left:${pct(STAGE_START[s.id])}%;width:${pct(s.plan)}%">
+      <span class="tl-sn">${s.n}</span><span class="tl-st">${s.title}</span><span class="tl-sm" id="tlm-${s.id}">${fmt(t)} / ${s.plan}:00 · ${d}/${ps.length}</span></button>`}).join("");
+  let k=0;
+  const dots=all.map(st=>{const lo=(st.kind==="prompt"&&STOPS[st.id])?(k++%2===1):false; const done=stepDone(st), isCur=st.id===cur.id, star=st.kind==="prompt"&&st.p.star, act=st.kind!=="prompt";
+    const label=st.kind==="prompt"?(STOPS[st.id]||""):"";
+    return `<button class="tl-dot ${done?"done":""} ${isCur?"cur":""} ${star?"star":""} ${act?"act":""}" data-step="${esc(st.id)}" style="left:${pct(st.at)}%" title="${esc((st.kind==="prompt"?st.id+"  ":"")+shortQ(st))}" aria-label="${esc((st.kind==="prompt"?st.id+": ":"")+shortQ(st))}">
+      <i></i>${st.kind==="prompt"?`<span class="tl-id">${esc(st.id)}</span>`:""}${label?`<span class="tl-stop ${lo?"lo":""}">${esc(label)}</span>`:""}</button>`}).join("");
+  const ticks=[0,10,20,30,40,50].map(m=>`<span class="tl-tick" style="left:${pct(m)}%">${m}′</span>`).join("");
+  return `<div class="tl-card">
+    <div class="tl-head">
+      <div class="row" style="gap:8px"><div class="tl-pace" id="tlPace"></div><button class="btn small stuck" id="stuckBtn" aria-expanded="false" aria-controls="stuckPanel">Stuck?</button></div>
+      <div class="tl-legend"><span><i class="lg done"></i>Asked</span><span><i class="lg star"></i>Priority</span><span><i class="lg act"></i>Script / action</span><span><i class="lg now"></i>Now</span></div>
+    </div>
+    <div class="tl-scroll"><div class="tl">
+      <div class="tl-segs">${segs}</div>
+      <div class="tl-track"><div class="tl-fill" id="tlFill"></div>${dots}<div class="tl-now" id="tlNow"><span id="tlNowL">00:00</span></div></div>
+      <div class="tl-ticks">${ticks}</div>
+    </div></div>
+    <div id="stuckPanel" hidden>${rescueHTML()}</div>
+  </div>`;
+}
+function focusHTML(st){
+  const scriptHTML=arr=>arr.map(l=>l.startsWith("ES: ")?(S.lang!=="en"?`<p class="es">${esc(l.slice(4))}</p>`:""):(S.lang!=="es"?`<p class="say">${esc(l)}</p>`:"")).join("");
+  if(st.kind==="script") return `<div class="focus-body"><h2 class="focus-q">${st.title}</h2><div class="say-box">${scriptHTML(st.lines)}</div>
+      <div class="tip"><b>Before the first question:</b> confirm consent out loud on the recording and start both recorders.</div>${running?"":`<div class="row"><button class="btn primary big" id="startTimerHere">Start the timer</button><span class="empty">Then press Next.</span></div>`}</div>`;
+  if(st.kind==="setup") return `<div class="focus-body"><h2 class="focus-q">Set up the learning journey timeline</h2>
+      <p class="goal" style="margin-top:0">Draw a line with 7 stops and write their words on it. Mark highs and lows together. Photo at the end, no names.</p>
+      <div class="line">TRIGGER → SEARCH → CHOICE → START → DURING → END or STOP → AFTER</div>
+      <div class="say-box"><p class="say">“Let's take the last learning experience you chose to do for your work: a course, a program, a workshop, a bootcamp, even a series of tutorials. We'll go through it step by step.”</p>${S.lang!=="en"?`<p class="es">“Vamos a tomar la última experiencia de aprendizaje que elegiste para tu trabajo: un curso, un programa, un taller, un bootcamp o incluso una serie de tutoriales. La repasamos paso a paso.”</p>`:""}</div>
+      <div class="row"><span class="lab">Which path?</span><div class="seg" role="group" aria-label="Path">${[["A","A · Did a learning experience"],["B","B · Nothing structured in 2 years"]].map(([k,l])=>`<button data-path="${k}" aria-pressed="${S.path===k}">${l}</button>`).join("")}</div></div></div>`;
+  if(st.kind==="closing") return `<div class="focus-body"><h2 class="focus-q">${st.title}</h2><div class="say-box">${scriptHTML(st.lines)}</div>
+      <div class="row"><span class="lab">Agreed to be recontacted?</span><div class="seg" role="group" aria-label="Recontact">${["Yes","No","Not asked"].map(o=>`<button data-recontact="${o}" aria-pressed="${S.recontact===o}">${o}</button>`).join("")}</div></div>
+      <div class="tip"><b>Next:</b> stop the timer, thank them, then open Review for the 15-minute debrief.</div></div>`;
+  const p=st.p, s=P(p.id), lang=S.lang;
+  return `<div class="focus-body prompt-focus ${s.asked?"done":""}" id="pr-${esc(p.id)}">
+    <div class="focus-meta"><span class="p-id">${esc(p.id)}</span>${STOPS[p.id]?`<span class="chip stop">${esc(STOPS[p.id])}</span>`:""}${p.star?'<span class="chip star">Priority</span>':""}${p.rq.map(r=>`<span class="chip">${r}</span>`).join("")}</div>
+    ${lang!=="es"?`<h2 class="focus-q">${esc(p.en)}</h2>`:""}
+    ${lang!=="en"?`<p class="${lang==="es"?"focus-q":"focus-es es"}">${esc(p.es)}</p>`:""}
+    <div class="focus-grid">
+      <div class="field"><label class="lab" for="note-${esc(p.id)}">Notes</label><textarea id="note-${esc(p.id)}" data-note="${esc(p.id)}" rows="7" placeholder="What they said, in their words. Timestamps help.">${esc(s.note)}</textarea></div>
+      <div class="stack" style="gap:10px">
+        <div class="probe-box"><span class="lab">Probe / listen for</span><p>${esc(p.probe)}</p></div>
+        <div class="tip"><b>Tip:</b> ${esc(p.tip)}</div>
+        <div class="tips" id="live-${esc(p.id)}"></div>
+      </div>
+    </div></div>`;
+}
+function renderInterview(){
+  const {all,st,i}=curStep(); S.stage=st.stage;
+  const s=STAGES.find(x=>x.id===st.stage), prev=all[i-1], next=all[i+1];
+  const stageSteps=all.filter(x=>x.stage===s.id);
+  $("#view-interview").innerHTML=`
+  ${timelineHTML(all,st)}
+  <div class="iv2">
+    <div class="stack" style="min-width:0;gap:14px">
+      <div class="focus panel">
+        <div class="focus-top">
+          <div><div class="eyebrow">Stage ${s.n} of ${STAGES.length} · ${s.title} · step ${i+1} of ${all.length}</div><p class="goal">${s.goal}</p></div>
+          <div class="seg" role="group" aria-label="Prompt language">${[["both","EN + ES"],["en","EN"],["es","ES"]].map(([k,l])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}">${l}</button>`).join("")}</div>
+        </div>
+        <div class="tip" id="stageWarn" hidden></div>
+        ${focusHTML(st)}
+        <div class="focus-nav">
+          <button class="btn" data-step="${esc(prev?.id||"")}" ${prev?"":"disabled"}>← ${prev?esc(prev.kind==="prompt"?prev.id:"Back"):"Start"}</button>
+          <span class="kbd">Alt + ← / → to move</span>
+          <div class="nav-right">${st.kind==="prompt"?`<label class="asked big ${P(st.id).asked?"on":""}"><input type="checkbox" id="ask-${esc(st.id)}" data-ask="${esc(st.id)}" ${P(st.id).asked?"checked":""}>Asked</label>`:""}
+          ${next?`<button class="btn primary" data-step="${esc(next.id)}" data-markasked="${st.kind==="prompt"?esc(st.id):""}">Next${next.kind==="prompt"?" · "+esc(next.id):""} →</button>`:`<button class="btn primary" data-goto="review">Finish → Review</button>`}</div>
+        </div>
+      </div>
+      ${next?`<button class="upnext" data-step="${esc(next.id)}"><span class="lab">Up next${next.stage!==st.stage?" · new stage":""}</span><span class="un-q">${next.kind==="prompt"?`<b>${esc(next.id)}</b> `:""}${esc(shortQ(next))}</span></button>`:""}
+      <div class="panel stage-list">
+        <div class="row" style="justify-content:space-between"><h3>In this stage</h3><span class="num">${stageSteps.filter(stepDone).length}/${stageSteps.length} done</span></div>
+        ${stageSteps.map(x=>`<button class="sl-row ${x.id===st.id?"cur":""} ${stepDone(x)?"done":""}" data-step="${esc(x.id)}">
+          <span class="sl-dot"></span><span class="sl-id">${x.kind==="prompt"?esc(x.id):"·"}</span><span class="sl-q">${esc(shortQ(x))}</span>${x.kind==="prompt"&&x.p.star?'<span class="chip star">Priority</span>':""}</button>`).join("")}
+      </div>
+    </div>
+    <aside class="capture panel" aria-label="Capture">
+      <div class="cap-in">
+        <div><h2>Capture</h2><p class="empty" style="margin-top:2px">Stamped with the timer and the current step.</p></div>
+        <textarea id="capText" rows="3" placeholder="Type a quote, a cue or a thought…"></textarea>
+        <div class="cap-btns">
+          <button class="btn small" data-cap="quote">Hot quote</button>
+          <button class="btn small" data-cap="nonverbal">Non-verbal</button>
+          <button class="btn small" data-cap="memo">Memo</button>
+        </div>
+        <div class="log" id="log"></div>
+        <div class="tip"><b>Facilitation:</b> count to 5 after each answer · ladder with “why was that important?” · mirror their last words · always back to “the last time”.</div>
+      </div>
+    </aside>
+  </div>`;
+  renderLog(); if(st.kind==="prompt") renderLive(st.id); updateTimeline(); stageWarn();
+  const sc=document.querySelector(".tl-scroll"), cd=document.querySelector(".tl-dot.cur");
+  if(sc&&cd&&sc.scrollWidth>sc.clientWidth) sc.scrollLeft=cd.offsetLeft-sc.clientWidth/2;
+}
+const KIND={quote:"Hot quote",nonverbal:"Non-verbal",memo:"Memo"};
+function renderLog(){
+  const el=$("#log"); if(!el) return;
+  el.innerHTML=S.log.length?S.log.slice().reverse().map(e=>`<div class="entry"><span class="ts">${e.t}</span><div><span class="k">${KIND[e.kind]} · S${e.stage.slice(1)}</span><p>${esc(e.text)}</p></div><button class="x" data-del="${e.id}" aria-label="Delete entry">×</button></div>`).join(""):`<p class="empty">Nothing captured yet. Aim for at least 3 hot quotes.</p>`;
+}
+function stageWarn(){
+  const w=$("#stageWarn"); if(!w) return; const s=STAGES.find(x=>x.id===S.stage), t=(S.stageTime[s.id]||0)/60;
+  const left=s.prompts.filter(p=>visible(p)&&p.star&&!P(p.id).asked).map(p=>p.id);
+  if(t>s.plan){ w.hidden=false; w.innerHTML=`<b>Over time for this stage.</b> ${left.length?`Cover the remaining priority prompts (${left.join(", ")}) and move on.`:"All priority prompts done. Move to the next stage."}`; }
+  else w.hidden=true;
+}
+function updateTimeline(){
+  const nowEl=$("#tlNow"); if(!nowEl) return;
+  const m=S.elapsed/60, pos=Math.min(100,m/TOTAL*100);
+  nowEl.style.left=pos+"%"; $("#tlFill").style.width=pos+"%"; $("#tlNowL").textContent=fmt(S.elapsed)+(m>TOTAL?" +":"");
+  STAGES.forEach(st=>{ const el=document.getElementById("tlm-"+st.id); if(!el) return;
+    const all=steps().filter(x=>x.stage===st.id), t=S.stageTime[st.id]||0;
+    el.textContent=`${fmt(t)} / ${st.plan}:00 · ${all.filter(stepDone).length}/${all.length}`; el.classList.toggle("over",t/60>st.plan); });
+  const {st}=curStep(), diff=m-st.at, pace=$("#tlPace");
+  if(!running&&S.elapsed<1){ pace.className="tl-pace"; pace.innerHTML=`<b>Ready.</b> Press Start when the conversation begins.`; return; }
+  const d=Math.round(Math.abs(diff));
+  if(diff>3){ pace.className="tl-pace late"; pace.innerHTML=`<b>${d} min behind plan.</b> Focus on priority prompts.`; }
+  else if(diff<-3){ pace.className="tl-pace early"; pace.innerHTML=`<b>${d} min ahead.</b> Room to probe deeper here.`; }
+  else { pace.className="tl-pace ok"; pace.innerHTML=`<b>On pace.</b> ${fmt(S.elapsed)} of ${TOTAL}:00 planned.`; }
+}
+function updateRail(){ updateTimeline(); }
+
+function renderReview(){
+  const cov=coverage(), tot=totals(), sug=suggestions(), missing=[!S.interviewer&&"interviewer name",!S.title&&"title",!S.date&&"date"].filter(Boolean);
+  $("#view-review").innerHTML=`
+  <div class="eyebrow">${esc([S.code,S.interviewer,S.date].filter(Boolean).join(" · ")||"No session details yet")}</div>
+  <h1 style="margin-top:4px">Review, debrief and export</h1>
+  <p class="lede">${tot.asked} of ${tot.total} prompts asked · ${S.log.filter(e=>e.kind==="quote").length} hot quotes · ${fmt(S.elapsed)} recorded on the timer. Do the 15-minute debrief now, then save and download the PDF.</p>
+  <div class="review">
+    <div class="stack">
+      <div class="panel stack">
+        <h2>Coverage by research question</h2>
+        <div class="cov">${Object.entries(cov).map(([k,c])=>`<span><b>${k}</b> ${RQS[k]}</span><span class="bar-t"><i style="width:${c.total?Math.round(c.asked/c.total*100):0}%"></i></span><span class="num">${c.asked}/${c.total}</span>`).join("")}</div>
+      </div>
+      <div class="panel stack">
+        <h2>Tips for this interview and the next</h2>
+        <ul class="sugg">${sug.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+      </div>
+      <div class="panel stack" id="aiPanel" hidden>
+        <h2>Coaching from Claude</h2>
+        <p class="empty">Sends your notes and captures (no names) to Claude for follow-up questions you missed, leading questions to avoid and guide changes. Treat it as a second opinion; synthesis stays with the team.</p>
+        <div class="row"><button class="btn" id="aiBtn">Get coaching</button></div>
+        <pre class="ai-out" id="aiOut" ${S.ai?"":"hidden"}>${esc(S.ai)}</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="panel">
+        <h2>Hypotheses</h2>
+        <div style="margin-top:6px">${HYPS.map(([k,l])=>{const h=S.hyps[k]||{};return `<div class="hyp"><span class="hid">${k}</span><div class="stack" style="gap:6px"><span style="font-size:14px">${esc(l)}</span>
+          <div class="seg" role="group" aria-label="${k}">${["Supported","Challenged","Unclear"].map(o=>`<button data-hyp="${k}" data-v="${o}" aria-pressed="${h.v===o}">${o}</button>`).join("")}</div>
+          <input type="text" id="hev-${k}" data-hev="${k}" value="${esc(h.e||"")}" placeholder="Which story supports or challenges it?"></div></div>`}).join("")}</div>
+      </div>
+      <div class="panel stack">
+        <h2>15-minute debrief</h2>
+        ${DEBRIEF.map(([k,l])=>`<div class="field"><label class="lab" for="db-${k}">${l}</label><textarea id="db-${k}" data-db="${k}" rows="3">${esc(S.debrief[k]||"")}</textarea></div>`).join("")}
+      </div>
+      <div class="panel stack">
+        <h2>Save and export</h2>
+        ${missing.length?`<p class="status err">Add the ${missing.join(", ")} in Setup before saving.</p>`:""}
+        <div class="row">
+          <button class="btn primary" id="saveBtn" ${missing.length?"disabled":""}>Save to team database</button>
+          <button class="btn" id="pdfBtn" ${missing.length?"disabled":""}>Download PDF</button>
+        </div>
+        <p class="status" id="saveStatus">${S.savedAt?"Last saved "+new Date(S.savedAt).toLocaleString():""}</p>
+      </div>
+    </div>
+  </div>`;
+  if(sampleCap) $("#aiPanel").hidden=false;
+}
+
+function renderLibrary(){
+  const el=$("#view-library");
+  if(!db&&api&&libState!=="code"&&!renderLibrary._busy&&Date.now()-(renderLibrary._t||0)>5000){ renderLibrary._t=Date.now(); renderLibrary._busy=true; apiLoad().finally(()=>{renderLibrary._busy=false;}); }
+  let inner;
+  if(!db && api && libState==="code") inner=teamBoxHTML(teamCode()?"That code didn't work. Check it and try again.":"");
+  else if(!db && api && libState==="error") inner=`<div class="banner">Could not reach the team archive. Check your connection and open Saved again.</div>`;
+  else if(!db && !api) inner=`<div class="banner">No team archive is connected here. Interviews stay in this browser and you can still download each PDF.</div>`;
+  else if(libState==="loading") inner=`<p class="empty" style="margin-top:14px">Loading saved interviews…</p>`;
+  else if(!library.length) inner=`<div class="banner">No interviews saved yet. Finish one, open Review and choose “Save to team database”. Everyone in the group will see it here.</div>`;
+  else inner=`<div class="lib">${library.map(r=>{const c=ALL.filter(p=>!p.path||p.path==="both"||p.path===r.path),a=c.filter(p=>r.prompts?.[p.id]?.asked).length;
+    return `<article class="card"><div class="eyebrow">${esc(r.code||"No code")} · Path ${esc(r.path||"A")}</div><h3>${esc(r.title||"Untitled")}</h3>
+      <div class="meta"><span>${esc(r.interviewer)}</span><span>${esc(r.date)}</span><span>${a}/${c.length} prompts</span><span>${(r.log||[]).filter(e=>e.kind==="quote").length} quotes</span></div>
+      <div class="row"><button class="btn small" data-open="${esc(r.id)}">Open</button><button class="btn small" data-pdf="${esc(r.id)}">PDF</button><button class="btn small ghost" data-rm="${esc(r.id)}">Delete</button></div>
+      <div class="row" id="rm-${esc(r.id)}" hidden><span class="status err" style="margin:0">Delete for the whole team?</span><button class="btn small" data-rmyes="${esc(r.id)}">Delete</button><button class="btn small ghost" data-rmno="${esc(r.id)}">Keep</button></div>
+    </article>`}).join("")}</div>`;
+  el.innerHTML=`<div class="eyebrow">Team archive</div><h1 style="margin-top:4px">Saved interviews</h1><p class="lede">Every interview the group saved, newest first. Open one to continue editing or download its PDF again.</p>${inner}`;
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.view) return setTab(b.dataset.view);
+  if(b.dataset.goto) return setTab(b.dataset.goto);
+  if(b.id==="timerReset"){
+    if(!b.dataset.armed){ if(S.elapsed<1&&!running) return; b.dataset.armed="1"; b.textContent="Sure? Click again"; b.classList.add("armed");
+      clearTimeout(b._t); b._t=setTimeout(()=>{ delete b.dataset.armed; b.textContent="Reset"; b.classList.remove("armed"); },3500); return; }
+    clearTimeout(b._t); delete b.dataset.armed; b.textContent="Reset"; b.classList.remove("armed");
+    running=false; S.elapsed=0; S.stageTime={}; persist();
+    $("#clock").textContent="00:00"; $("#timerBtn").textContent="Start";
+    if(view==="interview") renderInterview(); toast("Timer reset to 00:00"); return; }
+  if(b.id==="timerBtn"){ running=!running; lastTick=performance.now(); b.textContent=running?"Pause":"Resume"; if(view==="interview") updateTimeline(); return; }
+  if(b.dataset.step!==undefined){ if(!b.dataset.step) return; if(b.dataset.markasked){ const pp=P(b.dataset.markasked); if(!pp.asked&&(pp.note||"").trim()) pp.asked=true; } goStep(b.dataset.step); return; }
+  if(b.dataset.stagejump){ const f=steps().find(x=>x.stage===b.dataset.stagejump); if(f) goStep(f.id); return; }
+  if(b.dataset.lang){ S.lang=b.dataset.lang; persist(); view==="setup"?renderSetup():renderInterview(); return; }
+  if(b.dataset.path){ S.path=b.dataset.path; S.seen=S.seen||{}; S.seen[S.cur]=true; persist(); renderInterview(); return; }
+  if(b.dataset.recontact){ S.recontact=b.dataset.recontact; persist(); document.querySelectorAll("[data-recontact]").forEach(x=>x.setAttribute("aria-pressed",x===b)); updateTimeline(); refreshDots(); return; }
+  if(b.dataset.cap){ const ta=$("#capText"), txt=ta.value.trim(); if(!txt){ta.focus();return;}
+    S.log.push({id:Date.now().toString(36),kind:b.dataset.cap,text:txt,t:fmt(S.elapsed),stage:S.stage,step:S.cur}); ta.value=""; persist(); renderLog(); return; }
+  if(b.dataset.del){ S.log=S.log.filter(x=>x.id!==b.dataset.del); persist(); renderLog(); return; }
+  if(b.dataset.hyp){ const h=S.hyps[b.dataset.hyp]||(S.hyps[b.dataset.hyp]={}); h.v=b.dataset.v; persist();
+    document.querySelectorAll(`[data-hyp="${b.dataset.hyp}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b)); return; }
+  if(b.id==="goInterview"){ if(!S.interviewer||!S.title){ $("#setupStatus").className="status err"; $("#setupStatus").textContent="Add your name and an interview title first."; return;} setTab("interview"); return; }
+  if(b.id==="newIv"){ if(b.dataset.armed){ S=blank(); running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); renderSetup(); toast("New interview started"); }
+    else { b.dataset.armed="1"; b.textContent="Click again to clear the current draft"; } return; }
+  if(b.id==="stuckBtn"){ const sp=$("#stuckPanel"); sp.hidden=!sp.hidden; b.setAttribute("aria-expanded",!sp.hidden); return; }
+  if(b.id==="startTimerHere"){ running=true; lastTick=performance.now(); $("#timerBtn").textContent="Pause"; b.parentElement.remove(); updateTimeline(); return; }
+  if(b.id==="newFromStart"){ if(b.dataset.armed){ S=blank(); running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); setTab("setup"); }
+    else { b.dataset.armed="1"; b.textContent="Click again to clear the current draft"; } return; }
+  if(b.dataset.arcjump){ if(!S.interviewer||!S.title){ setTab("setup"); toast("Fill in your name and a title first"); return; }
+    const f=steps().find(x=>x.stage===b.dataset.arcjump); if(f){ S.cur=f.id; S.stage=f.stage; persist(); } setTab("interview"); return; }
+  if(b.id==="saveBtn") return saveRecord();
+  if(b.id==="pdfBtn") return downloadPDF(S);
+  if(b.id==="aiBtn") return coach(b);
+  if(b.dataset.open){ const r=library.find(x=>x.id===b.dataset.open); if(r){ S=Object.assign(blank(),JSON.parse(JSON.stringify(r))); running=false; $("#timerBtn").textContent="Resume"; persist(); sessLine(); setTab("review"); toast("Interview opened"); } return; }
+  if(b.dataset.pdf){ const r=library.find(x=>x.id===b.dataset.pdf); if(r) downloadPDF(Object.assign(blank(),r)); return; }
+  if(b.dataset.rm){ $("#rm-"+CSS.escape(b.dataset.rm)).hidden=false; return; }
+  if(b.dataset.rmno){ $("#rm-"+CSS.escape(b.dataset.rmno)).hidden=true; return; }
+  if(b.dataset.rmyes && !db && api){ apiCall("DELETE","?id="+encodeURIComponent(b.dataset.rmyes)).then(()=>{toast("Interview deleted"); apiLoad();}).catch(()=>toast("Could not delete right now.")); return; }
+  if(b.id==="teamCodeBtn"){ setTeamCode($("#teamCode").value.trim()); libState="loading"; apiCall("GET").then(d=>{ library=(d.items||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)); libState="ready"; toast("Team code saved"); if(view==="library") renderLibrary(); else { const t=$("#teamStatus"); if(t){t.className="status ok"; t.textContent="Code works. You can save to the team archive.";} } })
+      .catch(e=>{ libState=e.code==="bad_code"?"code":"error"; if(view==="library") renderLibrary(); else { const t=$("#teamStatus"); if(t){t.className="status err"; t.textContent=e.code==="bad_code"?"That code didn't work.":"Could not reach the server.";} } }); return; }
+  if(b.dataset.rmyes){ db.collection("interviews").doc(b.dataset.rmyes).delete().then(()=>toast("Interview deleted")).catch(()=>toast("Could not delete. You may not have edit access.")); return; }
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.f){ S[t.dataset.f]=t.value; persist(); sessLine(); return; }
+  if(t.dataset.note){ P(t.dataset.note).note=t.value; persist(); renderLive(t.dataset.note); return; }
+  if(t.dataset.hev){ (S.hyps[t.dataset.hev]||(S.hyps[t.dataset.hev]={})).e=t.value; persist(); return; }
+  if(t.dataset.db){ S.debrief[t.dataset.db]=t.value; persist(); return; }
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.f){ S[t.dataset.f]=t.value; persist(); sessLine(); return; }
+  if(t.dataset.check){ S.checks[t.dataset.check]=t.checked; persist(); return; }
+  if(t.dataset.ask){ const id=t.dataset.ask; P(id).asked=t.checked; persist();
+    document.getElementById("pr-"+id)?.classList.toggle("done",t.checked); t.closest(".asked")?.classList.toggle("on",t.checked); renderLive(id); refreshDots(); updateTimeline(); stageWarn(); return; }
+});
+
+
+function refreshDots(){ const {all}=curStep(); all.forEach(st=>{ document.querySelectorAll(`[data-step="${CSS.escape(st.id)}"].tl-dot, [data-step="${CSS.escape(st.id)}"].sl-row`).forEach(el=>el.classList.toggle("done",stepDone(st))); }); }
+document.addEventListener("keydown",e=>{ if(view!=="interview"||!e.altKey) return; if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft") return;
+  e.preventDefault(); const {all,i}=curStep(); const t=all[i+(e.key==="ArrowRight"?1:-1)]; if(t) goStep(t.id); });
+
+/* ---------------- timer ---------------- */
+setInterval(()=>{
+  if(!running) return; const now=performance.now(), dt=(now-lastTick)/1000; lastTick=now;
+  S.elapsed+=dt; S.stageTime[S.stage]=(S.stageTime[S.stage]||0)+dt;
+  $("#clock").textContent=fmt(S.elapsed);
+  if(view==="interview"){ updateTimeline(); stageWarn(); }
+  if(Math.floor(S.elapsed)%5===0) persist();
+},250);
+
+/* ---------------- save ---------------- */
+function record(){ const r=JSON.parse(JSON.stringify(S)); r.updatedAt=Date.now(); r.createdAt=r.createdAt||r.updatedAt; if(myId&&!r.author) r.author=myId; delete r.stage; delete r.cur; return r; }
+async function saveRecord(){
+  const st=$("#saveStatus");
+  if(!db && api){ st.className="status"; st.textContent="Saving…";
+    try{ const r=record(); await apiCall("POST","",r); S.createdAt=r.createdAt; S.updatedAt=r.updatedAt; S.savedAt=Date.now(); persist();
+      st.className="status ok"; st.textContent="Saved to the team archive. Everyone in the group can open it under Saved."; apiLoad(); }
+    catch(e){ st.className="status err"; st.textContent= e.code==="bad_code" ? "The team code is missing or wrong. Enter it under Setup or Saved, then save again." : "Could not reach the server. Your draft is safe in this browser; try again in a moment."; }
+    return; }
+  if(!db){ st.className="status"; st.textContent="Saved in this browser only. No team archive is connected here."; S.savedAt=Date.now(); persist(); return; }
+  st.className="status"; st.textContent="Saving…";
+  try{ const r=record(); await db.collection("interviews").doc(S.id).set(r); S.createdAt=r.createdAt; S.updatedAt=r.updatedAt; S.savedAt=Date.now(); persist();
+    st.className="status ok"; st.textContent="Saved to the team database. Everyone in the group can open it under Saved."; }
+  catch(err){ st.className="status err";
+    st.textContent= err&&err.code==="invalid_argument" ? "Saving was refused: you need edit access to this tool. Ask the owner to add you as an Editor." :
+      err&&err.code==="quota_exceeded" ? "The database is full. Delete old interviews under Saved and try again." : "Could not save right now. Your draft is safe in this browser; try again in a moment."; }
+}
+
+
+/* ---------------- website storage (api.php on your server) ---------------- */
+let API_URL="api";
+const API_CANDIDATES=["/api","api.php"];
+let api=false, libTimer=null;
+const teamCode=()=>{ try{return localStorage.getItem("ifg-team-code")||"";}catch(e){return "";} };
+function setTeamCode(v){ try{localStorage.setItem("ifg-team-code",v);}catch(e){} }
+async function apiCall(method,query="",body){
+  const r=await fetch(API_URL+query,{method,cache:"no-store",headers:{"Content-Type":"application/json","X-Team-Code":teamCode()},body:body?JSON.stringify(body):undefined});
+  if(r.status===401){ const e=new Error("bad_code"); e.code="bad_code"; throw e; }
+  if(!r.ok){ const e=new Error("http_"+r.status); e.code="http"; throw e; }
+  return r.json();
+}
+async function apiLoad(){
+  if(!api) return;
+  try{ const d=await apiCall("GET"); library=(d.items||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)); libState="ready"; }
+  catch(e){ libState=e.code==="bad_code"?"code":"error"; }
+  if(view==="library") renderLibrary();
+}
+function teamBoxHTML(msg){
+  return `<div class="team-box"><label class="lab" for="teamCode">Team code</label>
+    <div class="row"><input type="password" id="teamCode" value="${esc(teamCode())}" placeholder="Ask Jakub for the code" style="flex:1;min-width:160px"><button class="btn primary small" id="teamCodeBtn">Use code</button></div>
+    <p class="status ${msg?"err":""}" id="teamStatus">${msg||"Needed once per browser to save to and read from the team archive."}</p></div>`;
+}
+
+/* ---------------- PDF ---------------- */
+
+const EXTRA_MAP={"ł":"l","Ł":"L","đ":"d","Đ":"D","ø":"o","Ø":"O","ß":"ss","ı":"i","′":"'","−":"-"};
+const WINANSI_OK="“”‘’–—…•€ŠšŽžŒœŸ‚„†‡‰‹›™ƒˆ˜";
+function translit(t){ return String(t).replace(/[łŁđĐøØßı]/g,c=>EXTRA_MAP[c]).normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function pdfSafe(t){ let out=""; for(const ch of String(t)){ const c=ch.codePointAt(0);
+  if(c<=255||WINANSI_OK.includes(ch)) out+=ch; else if(EXTRA_MAP[ch]) out+=EXTRA_MAP[ch];
+  else { const b=ch.normalize("NFD").replace(/[\u0300-\u036f]/g,""); out+= (b&&b.codePointAt(0)<=255)?b:""; } } return out; }
+function buildPDF(R){
+  const { jsPDF } = window.jspdf; const doc=new jsPDF({unit:"pt",format:"a4"});
+  const W=595, M=48, CW=W-M*2; let y=M;
+  const violet=[29,29,27], grey=[125,123,116], ink=[29,29,27];
+  const clean=s=>pdfSafe(String(s??"").replace(/[★→]/g,m=>m==="→"?"->":"*"));
+  const need=h=>{ if(y+h>842-M){ doc.addPage(); y=M; } };
+  const text=(s,{size=10,bold=false,italic=false,color=ink,gap=4,indent=0}={})=>{
+    doc.setFont("helvetica",bold?(italic?"bolditalic":"bold"):(italic?"italic":"normal")); doc.setFontSize(size); doc.setTextColor(...color);
+    const lines=doc.splitTextToSize(clean(s),CW-indent); const lh=size*1.35;
+    lines.forEach(l=>{ need(lh); doc.text(l,M+indent,y+size); y+=lh; }); y+=gap; };
+  const rule=()=>{ need(10); doc.setDrawColor(230,230,234); doc.line(M,y,W-M,y); y+=10; };
+  // header band
+  doc.setFillColor(43,43,41); doc.rect(0,0,W,96,"F"); doc.setFillColor(230,240,60); doc.rect(0,96,W,5,"F");
+  doc.setTextColor(255,255,255); doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.text("ELISAVA DESIGN RESEARCH CHALLENGE  ·  INTERVIEW RECORD",M,34);
+  doc.setFont("helvetica","bold"); doc.setFontSize(18); doc.text(doc.splitTextToSize(clean(R.title||"Untitled interview"),CW)[0],M,60);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.text(clean([R.code,R.interviewer,R.date].filter(Boolean).join("  ·  ")),M,80);
+  y=120;
+  const meta=[["Interviewer",R.interviewer],["Note-taker",R.noteTaker||"-"],["Date",R.date],["Participant",R.code||"-"],["Profile",R.profile||"-"],["Setting",`${R.setting} · ${R.language}`],["Path",R.path==="B"?"B (no structured learning)":"A (learning experience)"],["Duration",fmt(R.elapsed)],["Recontact",R.recontact||"Not recorded"]];
+  meta.forEach(([k,v])=>{ doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...grey); need(14); doc.text(k.toUpperCase(),M,y+9);
+    doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(...ink); const l=doc.splitTextToSize(clean(v),CW-110); l.forEach((x,i)=>{need(13); doc.text(x,M+110,y+9); y+=13;}); y+=2; });
+  y+=6; rule();
+  const vis=p=>!p.path||p.path==="both"||p.path===R.path;
+  STAGES.forEach(s=>{
+    need(40); text(`STAGE ${s.n}  ·  ${s.title.toUpperCase()}`,{size:12,bold:true,color:violet,gap:2});
+    text(`Time on stage ${fmt(R.stageTime?.[s.id]||0)} of ${s.plan}:00 planned`,{size:8.5,color:grey,gap:8});
+    s.prompts.filter(vis).forEach(p=>{ const st=R.prompts?.[p.id]||{};
+      need(30); text(`${st.asked?"[x]":"[ ]"}  ${p.id}${p.star?" *":""}  ${p.en}`,{size:10,bold:true,gap:2});
+      text(st.note&&st.note.trim()?st.note:"No notes.",{size:10,italic:!st.note,color:st.note?ink:grey,indent:22,gap:8}); });
+    y+=4; });
+  rule();
+  [["quote","Hot quotes"],["nonverbal","Non-verbal cues"],["memo","Analytic memos"]].forEach(([k,l])=>{
+    const items=(R.log||[]).filter(e=>e.kind===k); need(30); text(l.toUpperCase(),{size:11,bold:true,color:violet,gap:4});
+    if(!items.length) text("None captured.",{italic:true,color:grey,gap:8});
+    items.forEach(e=>text(`[${e.t} · S${e.stage.slice(1)}]  ${k==="quote"?"“"+e.text+"”":e.text}`,{gap:4})); y+=6; });
+  rule();
+  text("HYPOTHESES",{size:11,bold:true,color:violet});
+  HYPS.forEach(([k,l])=>{ const h=R.hyps?.[k]||{}; text(`${k}  ${h.v||"Not rated"}`,{bold:true,gap:1}); text(l,{size:9,color:grey,gap:1}); if(h.e) text(h.e,{indent:14,gap:6}); else y+=5; });
+  rule();
+  text("DEBRIEF",{size:11,bold:true,color:violet});
+  DEBRIEF.forEach(([k,l])=>{ text(l,{bold:true,gap:1}); text(R.debrief?.[k]||"-",{gap:8}); });
+  const keep=S; S=R; const sug=suggestions(); S=keep;
+  rule(); text("TIPS FOR THE NEXT INTERVIEW",{size:11,bold:true,color:violet});
+  sug.forEach(s=>text("- "+s,{gap:3}));
+  if(R.ai){ y+=6; rule(); text("COACHING FROM CLAUDE (second opinion)",{size:11,bold:true,color:violet}); text(R.ai,{size:9.5}); }
+  const n=doc.getNumberOfPages();
+  for(let i=1;i<=n;i++){ doc.setPage(i); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(...grey);
+    doc.text(clean(`${R.code||""} ${R.title||""}`).trim().slice(0,80),M,842-24); doc.text(`${i} / ${n}`,W-M,842-24,{align:"right"}); }
+  return doc;
+}
+async function downloadPDF(R){
+  if(!window.jspdf){ toast("The PDF library did not load. Check your connection and reload."); return; }
+  const name=[R.date,R.code||R.title,R.interviewer].filter(Boolean).map(translit).join("_").replace(/[^\w\-]+/g,"-").replace(/-+/g,"-").slice(0,90)+".pdf";
+  const blob=buildPDF(R).output("blob");
+  if(dlCap){ try{ await dlCap.save({filename:name,data:blob}); toast("PDF saved"); }
+    catch(err){ if(err&&err.code!=="declined") toast("The PDF could not be saved here."); } return; }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+
+/* ---------------- AI coaching ---------------- */
+async function coach(btn){
+  const out=$("#aiOut"); btn.disabled=true; out.hidden=false; out.textContent="Thinking…";
+  const notes=ALL.filter(visible).map(p=>`${p.id} ${P(p.id).asked?"[asked]":"[not asked]"} ${p.en}\nNotes: ${P(p.id).note||"-"}`).join("\n\n");
+  const caps=S.log.map(e=>`${KIND[e.kind]} [${e.t}]: ${e.text}`).join("\n")||"-";
+  const ask=`You are a senior qualitative design researcher coaching a Master's student after a semi-structured interview. The study: how creative professionals in Spain (21-45) fit learning into working life. Research questions: RQ1 triggers & goals, RQ2 fit & continuity, RQ3 choosing & valuing, RQ4 applying & proving. Method rules: ask about specific past events, never leading or hypothetical questions, ladder to values.
+
+Interview notes:
+${notes}
+
+Captures:
+${caps}
+
+Write plain text, no markdown symbols, in English, under 250 words, with these four short sections:
+1. Strongest stories (2-3 bullets, cite prompt ids)
+2. Follow-ups they missed (3 concrete questions to ask if they recontact, in English and Spanish)
+3. Interviewing habits to adjust (based on how the notes read, e.g. generalisations not pushed)
+4. Change to the guide for the next interview (1-2 items)
+Do not invent facts that are not in the notes.`;
+  try{ const r=await sampleCap(ask,{onText:({text})=>{out.textContent=text;}}); S.ai=r.text; out.textContent=r.text; persist(); }
+  catch(err){ if(err&&err.code==="not_granted"){ $("#aiPanel").hidden=true; } else out.textContent= err&&err.code==="rate_limited"?"Too many requests right now. Try again in a minute.":"Coaching is not available right now."; if(!S.ai) out.hidden= err&&err.code==="not_granted"; }
+  btn.disabled=false;
+}
+
+/* ---------------- boot ---------------- */
+sessLine(); $("#clock").textContent=fmt(S.elapsed); if(S.elapsed>0) $("#timerBtn").textContent="Resume";
+setTab("start");
+(async()=>{
+  if(!window.claude||!window.claude.use){
+    try{ const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),4000);
+      for(const c of API_CANDIDATES){ try{ const r=await fetch(c+"?ping=1",{cache:"no-store",signal:ctl.signal});
+          const j=r.ok?await r.json().catch(()=>null):null; if(j&&j.ok){ API_URL=c; api=true; break; } }catch(e){} }
+      clearTimeout(t); }catch(e){ api=false; }
+    libState=api?"loading":"none";
+    if(api){ apiLoad(); if(view==="setup") renderSetup(); }
+    if(view==="library") renderLibrary(); return; }
+  const [d,dl,sm,u]=await Promise.all(["db","downloads","sample","user"].map(n=>window.claude.use(n).catch(()=>null)));
+  db=d; dlCap=dl; sampleCap=sm; userCap=u;
+  try{ myId=u? await u.id():null; }catch(e){}
+  if(view==="review") renderReview();
+  if(db){ db.collection("interviews").orderBy("updatedAt","desc").limit(200).onSnapshot(snap=>{
+      library=snap.docs.map(x=>x.data()).filter(Boolean); libState="ready"; if(view==="library") renderLibrary(); },
+    ()=>{ libState="ready"; if(view==="library") renderLibrary(); }); }
+  else if(view==="library") renderLibrary();
+})();
+</script>
+
+</body>
+</html>
