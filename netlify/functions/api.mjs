@@ -1,5 +1,5 @@
 // Interview Field Guide · team archive API for Netlify
-// GET              -> list all interviews
+// GET              -> list all interviews (add ?kind=guide for interview guides)
 // POST (json)      -> create or update one interview
 // DELETE ?id=...   -> delete one interview (kept under deleted/ so it can be restored)
 // Every call except ?ping=1 needs the header X-Team-Code.
@@ -34,7 +34,12 @@ export default async (req) => {
   }
 
   const s = store();
-  const listIv = async () => (await s.list()).blobs.filter((b) => b.key.startsWith("iv/"));
+  // kind=guide -> interview guides, otherwise interviews
+  const isGuide = url.searchParams.get("kind") === "guide";
+  const PFX = isGuide ? "guide/" : "iv/";
+  const DEL = isGuide ? "deleted-guide/" : "deleted/";
+  const LIMIT = isGuide ? 100 : MAX_RECORDS;
+  const listIv = async () => (await s.list()).blobs.filter((b) => b.key.startsWith(PFX));
 
   if (req.method === "GET") {
     const blobs = await listIv();
@@ -49,10 +54,10 @@ export default async (req) => {
     let d;
     try { d = JSON.parse(raw); } catch { return json(400, { error: "invalid" }); }
     if (!d || typeof d !== "object" || !idOk(d.id)) return json(400, { error: "invalid" });
-    const key = "iv/" + d.id;
+    const key = PFX + d.id;
     const existing = await s.get(key);
     if (existing === null) {
-      if ((await listIv()).length >= MAX_RECORDS) return json(507, { error: "full" });
+      if ((await listIv()).length >= LIMIT) return json(507, { error: "full" });
     }
     await s.setJSON(key, d);
     return json(200, { ok: true });
@@ -61,9 +66,9 @@ export default async (req) => {
   if (req.method === "DELETE") {
     const id = url.searchParams.get("id");
     if (!idOk(id)) return json(400, { error: "invalid" });
-    const key = "iv/" + id;
+    const key = PFX + id;
     const d = await s.get(key, { type: "json" });
-    if (d) await s.setJSON("deleted/" + id + "-" + Date.now(), d);
+    if (d) await s.setJSON(DEL + id + "-" + Date.now(), d);
     await s.delete(key);
     return json(200, { ok: true });
   }

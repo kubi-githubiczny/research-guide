@@ -75,7 +75,7 @@ h3{font-size:15px;font-weight:600}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field.wide{grid-column:1/-1}
 label.lab,.lab{font-size:12.5px;font-weight:600;color:var(--muted)}
-input[type=text],input[type=date],select,textarea{width:100%;background:var(--sunk);border:1px solid transparent;border-radius:var(--r-s);padding:10px 14px;min-width:0}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;background:var(--sunk);border:1px solid transparent;border-radius:var(--r-s);padding:10px 14px;min-width:0}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:var(--surface)}
 textarea{resize:vertical;min-height:64px;line-height:1.5}
 .req{color:var(--accent)}
@@ -89,7 +89,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .iv{display:grid;grid-template-columns:230px minmax(0,1fr) 330px;gap:16px;align-items:start;margin-top:4px}
 @media (max-width:1180px){.iv{grid-template-columns:210px minmax(0,1fr)}.capture{grid-column:1/-1}}
 @media (max-width:760px){.iv{grid-template-columns:1fr}}
-.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 82px);display:flex;flex-direction:column;gap:10px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr,76px));display:flex;flex-direction:column;gap:10px}
 @media (max-width:760px){.rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}}
 .stage-btn{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;text-align:left;border:0;background:var(--surface);border-radius:20px;padding:14px 16px;cursor:pointer;min-width:0}
 @media (max-width:760px){.stage-btn{min-width:180px}}
@@ -140,7 +140,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .stage-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
 
 /* capture */
-.capture{position:sticky;top:calc(env(safe-area-inset-top,0px) + 82px)}
+.capture{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr,76px))}
 @media (max-width:1180px){.capture{position:static}}
 .cap-in{display:flex;flex-direction:column;gap:12px}
 .cap-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -184,7 +184,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 
 /* ---- timeline navigator ---- */
 .tl-card{background:var(--surface);border-radius:var(--r);padding:16px 20px 10px;box-shadow:var(--shadow);margin-bottom:16px}
-@media (min-width:900px){.tl-card{position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);z-index:4;box-shadow:0 6px 20px rgba(20,20,30,.06)}}
+@media (min-width:900px){.tl-card{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr,76px));z-index:4;box-shadow:0 6px 20px rgba(20,20,30,.06)}}
 .tl-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:10px}
 .tl-pace{font-size:13.5px;padding:6px 14px;border-radius:999px;background:var(--sunk)}
 .tl-pace.ok{background:var(--ok-soft);color:var(--ok)}
@@ -232,7 +232,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 /* ---- focus + lists ---- */
 .iv2{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
 @media (max-width:1100px){.iv2{grid-template-columns:1fr}.capture{position:static}}
-.capture{top:calc(env(safe-area-inset-top,0px) + 262px)}
+.capture{top:calc(env(safe-area-inset-top,0px) + var(--hdr,76px) + 236px)}
 .focus{padding:22px 24px}
 .focus-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 16px;align-items:flex-start;margin-bottom:14px}
 .focus-top .goal{margin-top:4px;font-size:13.5px}
@@ -328,7 +328,7 @@ h1{font-weight:400;letter-spacing:-.02em}
 .hello{font-weight:300;letter-spacing:-.035em}
 h2{font-weight:500}
 .panel,.card,.flow-card,.tl-card,.upnext,.banner,.script,.callout{background:var(--surface)}
-input[type=text],input[type=date],select,textarea{background:var(--white);border-color:var(--line)}
+input[type=text],input[type=date],input[type=number],select,textarea{background:var(--white);border-color:var(--line)}
 input:focus,select:focus,textarea:focus{border-color:var(--ink);background:var(--white)}
 .btn{background:var(--white)}
 .btn:hover{background:var(--sunk)}
@@ -482,6 +482,41 @@ input[type=password]{width:100%;background:var(--white);border:1px solid var(--l
 .timer .btn.reset{background:transparent;color:var(--muted);padding:6px 10px}
 .timer .btn.reset:hover{background:var(--sunk);color:var(--ink)}
 .timer .btn.reset.armed{background:var(--warn-soft);color:var(--warn)}
+
+/* ---- guide picker + editor ---- */
+.guide-pick{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:999px;padding:5px 6px 5px 16px;max-width:100%;min-width:0}
+.guide-pick span{font-size:12.5px;font-weight:700;color:var(--muted)}
+.guide-pick select{border:0;background:var(--white);border-radius:999px;padding:7px 12px;font-weight:600;font-size:13.5px;max-width:210px;min-width:0;cursor:pointer}
+.guide-pick.outdated select{box-shadow:0 0 0 2px var(--accent)}
+@media (max-width:760px){.guide-pick{order:5;width:100%}.guide-pick select{max-width:none;flex:1}}
+.ed-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 20px;margin-bottom:14px}
+.ed-pick{max-width:280px}
+.ed-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr,76px));z-index:3;background:var(--pill);color:var(--pill-ink);border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;flex-direction:column;gap:6px}
+.ed-bar .btn{background:rgba(255,255,255,.12);color:var(--pill-ink)}
+.ed-bar .btn.primary{background:var(--accent);color:var(--accent-ink)}
+.ed-bar .status{color:#D6D4CD}.ed-bar .status.ok{color:#9BE3B4}.ed-bar .status.err{color:#FFB59A}
+#view-editor .panel{margin-bottom:14px}
+.ed-stage{background:var(--surface);border-radius:var(--r);margin-bottom:12px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.ed-stage[open]{box-shadow:inset 0 0 0 2px var(--ink)}
+.ed-stage summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 20px;cursor:pointer;list-style:none}
+.ed-stage summary::-webkit-details-marker{display:none}
+.ed-st-t{font-weight:700;font-size:17px;flex:1;min-width:0}
+.ed-body{padding:0 20px 20px;display:flex;flex-direction:column;gap:14px}
+.ed-qs{display:flex;flex-direction:column;gap:10px}
+.ed-q{background:var(--white);border-radius:var(--r-s);padding:14px;display:flex;flex-direction:column;gap:10px}
+.ed-q input[type=text],.ed-q textarea,.ed-q select,.ed-hyp textarea,.ed-hyp input{background:var(--sunk)}
+.ed-q-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ed-id{width:78px!important;font-weight:800;text-align:center}
+.ed-q-act{margin-left:auto;display:flex;gap:4px}
+.check-inline{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;cursor:pointer}
+.check-inline input{accent-color:var(--ink);width:16px;height:16px}
+.ed-rqs{display:flex;flex-wrap:wrap;gap:6px 14px}
+.ed-hyp{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:8px;align-items:start}
+@media (max-width:560px){.ed-hyp{grid-template-columns:1fr}}
+.ed-st-act{border-top:1px solid var(--line);padding-top:12px}
+.ed-more{background:var(--white);border-radius:var(--r-s);padding:12px 14px}
+.ed-more summary{cursor:pointer;font-weight:600;font-size:14px}
+.ed-more[open] summary{margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -495,7 +530,9 @@ input[type=password]{width:100%;background:var(--white);border:1px solid var(--l
       <button class="tab" role="tab" data-view="interview" id="tab-interview">2 Interview</button>
       <button class="tab" role="tab" data-view="review" id="tab-review">3 Review & export</button>
       <button class="tab" role="tab" data-view="library" id="tab-library">Saved</button>
+      <button class="tab" role="tab" data-view="editor" id="tab-editor">Guides</button>
     </nav>
+    <label class="guide-pick" id="guidePick"><span>Guide</span><select id="guideSel" aria-label="Interview guide"></select></label>
     <div class="timer">
       <span class="clock" id="clock" aria-live="off">00:00</span>
       <button class="btn small primary" id="timerBtn">Start</button>
@@ -510,23 +547,24 @@ input[type=password]{width:100%;background:var(--white);border:1px solid var(--l
   <section class="view" id="view-interview" hidden></section>
   <section class="view" id="view-review" hidden></section>
   <section class="view" id="view-library" hidden></section>
+  <section class="view" id="view-editor" hidden></section>
 </main>
 <div class="toast" id="toast" hidden></div>
 
 <script>
 if(location.protocol==="http:"&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) location.replace("https:"+location.href.slice(5));
 /* ---------------- guide content ---------------- */
-const RQS = {
+const DEF_RQS = {
   RQ1:"Triggers & goals", RQ2:"Fit & continuity", RQ3:"Choosing & valuing", RQ4:"Applying & proving"
 };
-const HYPS = [
+const DEF_HYPS = [
   ["H1","Learning is triggered more by concrete work events (new role, client request, AI) than by long-term career plans."],
   ["H2","“No time” is often a proxy: dropping out comes from low energy and no immediate application more than from the schedule."],
   ["H3","For creatives, portfolio-ready outputs and contacts matter more than certificates."],
   ["H4","People find it hard to judge course quality and rely on peers and visible work of alumni or teachers."],
   ["H5","Employer support for learning exists on paper but is rarely used or known; freelancers carry the cost alone."]
 ];
-const STAGES = [
+const DEF_STAGES = [
   { id:"s1", n:"1", title:"Warm-up & Rapport", plan:5,
     goal:"Set ground rules, confirm consent, build psychological safety.",
     script:[
@@ -574,7 +612,7 @@ const STAGES = [
       "ES: “Nos has ayudado muchísimo, gracias. Lo anonimizaremos todo y solo lo usaremos para este proyecto. En unas semanas probaremos algunas ideas: ¿te parece bien que te volvamos a contactar?”"
     ]}
 ];
-const ALL = STAGES.flatMap(s=>s.prompts.map(p=>({...p,stage:s.id})));
+let RQS={},HYPS=[],STAGES=[],ALL=[],RQ_DETAIL=[],ARC={},STOPS={},TOTAL=1,STAGE_START={},STUDY={},ACTIVE=null,GUIDES=[],DEFAULT_GUIDE=null;
 const DEBRIEF = [
   ["d1","Top 3 takeaways from this person"],
   ["d2","Which RQ did this interview inform most? What did we learn that is new?"],
@@ -678,22 +716,22 @@ const RESCUE=[
   ["My mind went blank","Read the big question out loud as it is. That's what it's there for."]
 ];
 
-const RQ_DETAIL=[
+const DEF_RQ_DETAIL=[
   {k:"RQ1",t:"Triggers & goals",q:"What moments in creative professionals' working lives trigger a need to learn, and what do they hope learning will change for them?",listen:"Concrete events (new role, client brief, AI changing tasks), emotions, the hoped-for after-state."},
   {k:"RQ2",t:"Fit & continuity",q:"How do creative professionals fit learning into their real working weeks, and what helps or stops them from starting, continuing and finishing?",listen:"Time windows, energy, deadlines, freelance irregularity, the exact moment of dropping out, peers."},
   {k:"RQ3",t:"Choosing & valuing",q:"How do they choose between formal programs, platforms, informal and AI-supported learning, and judge whether it is worth their time and money?",listen:"Where they searched, what they compared, trust signals, price feelings, who paid."},
   {k:"RQ4",t:"Applying & proving",q:"How do they apply what they learn and make it visible to employers and clients, and what role do employers, portfolios and credentials play?",listen:"First use at work, recognition, portfolio vs certificate, employer support (time, budget)."}
 ];
-function rqWhere(k){ return ALL.filter(p=>p.stage!=="s4"&&p.rq.includes(k)).map(p=>p.id); }
+function rqWhere(k){ const last=STAGES.length>1?STAGES[STAGES.length-1].id:""; return ALL.filter(p=>p.stage!==last&&p.rq.includes(k)).map(p=>p.id); }
 function overviewHTML(){
   return `<section class="ov">
     <div class="ov-head">
       <div class="ov-label">What we are here to learn</div>
-      <p class="ov-study">¿Cómo puede ELISAVA ofrecer formatos de aprendizaje que se adapten a los horarios laborales, los ritmos y las necesidades de los profesionales creativos en España de entre 21 y 45 años?</p>
-      <div class="ov-meta"><span><b>Who</b> creative professionals, 21-45, working in Spain</span><span><b>Focus</b> fitting learning into a creative working life</span><span><b>Method</b> semi-structured interview, about 50 min</span></div>
+      <p class="ov-study">${esc(STUDY.q)}</p>
+      <div class="ov-meta">${[["Who",STUDY.who],["Focus",STUDY.focus],["Method",STUDY.method]].filter(x=>x[1]).map(([k,v])=>`<span><b>${k}</b> ${esc(v)}</span>`).join("")}</div>
     </div>
     <div class="ov-rqs">${RQ_DETAIL.map(r=>`<article class="ov-rq">
-        <div class="ov-rq-top"><span class="ov-k">${r.k}</span><h3>${r.t}</h3></div>
+        <div class="ov-rq-top"><span class="ov-k">${esc(r.k)}</span><h3>${esc(r.t)}</h3></div>
         <p class="ov-q">${esc(r.q)}</p>
         <div class="ov-sub"><span class="ov-sl">Listen for</span><p>${esc(r.listen)}</p></div>
         <div class="ov-sub"><span class="ov-sl">Asked through</span><div class="ov-ids">${rqWhere(r.k).map(i=>`<span>${esc(i)}</span>`).join("")}</div></div>
@@ -702,20 +740,20 @@ function overviewHTML(){
   </section>`;
 }
 
-const ARC={s1:{range:"5-10 min",key:["1.1","1.2"]},s2:{range:"10-15 min",key:["2.1","2.2","2.4"]},s3:{range:"20-25 min",key:["3.1","3.3","3.5","3.6","3.8"]},s4:{range:"5-10 min",key:["4.1","4.3"]}};
+const DEF_ARC={s1:{range:"5-10 min",key:["1.1","1.2"]},s2:{range:"10-15 min",key:["2.1","2.2","2.4"]},s3:{range:"20-25 min",key:["3.1","3.3","3.5","3.6","3.8"]},s4:{range:"5-10 min",key:["4.1","4.3"]}};
 function arcHTML(){
   return `<section class="arc-wrap">
-    <div class="arc-head"><div><div class="eyebrow">The interview at a glance</div><h2>The 4-stage arc</h2></div><p class="empty">Time ranges from the class guide, with our planned minutes. Open a stage to jump straight to it.</p></div>
+    <div class="arc-head"><div><div class="eyebrow">The interview at a glance</div><h2>The ${STAGES.length}-stage arc</h2></div><p class="empty">Time ranges from the class guide, with our planned minutes. Open a stage to jump straight to it.</p></div>
     <div class="arc">${STAGES.map((st,i)=>{
       const rqs=[...new Set(st.prompts.flatMap(p=>p.rq))].sort();
-      const keys=ARC[st.id].key.map(id=>ALL.find(p=>p.id===id)).filter(Boolean);
+      const keys=((ARC[st.id]||{}).key||[]).map(id=>ALL.find(p=>p.id===id)).filter(Boolean); const core=STAGES.reduce((a,b)=>b.plan>a.plan?b:a,STAGES[0]).id===st.id;
       return `${i?'<div class="arc-arrow" aria-hidden="true"></div>':""}
-      <article class="arc-card ${i===2?"core":""}">
-        <div class="arc-top"><span class="arc-n">${st.n}</span><span class="arc-time">${ARC[st.id].range} <em>· plan ${st.plan}</em></span></div>
-        <h3>${st.title}</h3>
+      <article class="arc-card ${core?"core":""}">
+        <div class="arc-top"><span class="arc-n">${st.n}</span><span class="arc-time">${(ARC[st.id]||{}).range?esc(ARC[st.id].range)+" <em>· plan "+st.plan+"</em>":st.plan+" min"}</span></div>
+        <h3>${esc(st.title)}</h3>
         <p class="arc-goal">${esc(st.goal)}</p>
-        <div class="arc-sub"><span class="ov-sl">Objectives</span><div class="ov-ids">${rqs.length?rqs.map(r=>`<span title="${esc(RQS[r])}">${r} ${esc(RQS[r])}</span>`).join(""):"<span>Rapport, consent</span>"}</div></div>
-        <div class="arc-sub"><span class="ov-sl">Key questions</span><ol class="arc-q">${keys.map(p=>`<li><b>${esc(p.id)}</b> ${esc(p.en)}</li>`).join("")}</ol>
+        <div class="arc-sub"><span class="ov-sl">Objectives</span><div class="ov-ids">${rqs.length?rqs.map(r=>`<span title="${esc(RQS[r])}">${esc(r)} ${esc(RQS[r])}</span>`).join(""):"<span>Rapport, context</span>"}</div></div>
+        <div class="arc-sub"><span class="ov-sl">Key questions</span>${keys.length?`<ol class="arc-q">${keys.map(p=>`<li><b>${esc(p.id)}</b> ${esc(p.en)}</li>`).join("")}</ol>`:`<p class="arc-note">${st.prompts.length} question${st.prompts.length===1?"":"s"}</p>`}
           ${st.timeline?'<p class="arc-note">Uses the journey timeline: Trigger → Search → Choice → Start → During → End → After. Path B if nothing structured in 2 years.</p>':""}</div>
         <button class="btn small arc-go" data-arcjump="${st.id}">Open stage ${st.n} →</button>
       </article>`}).join("")}</div>
@@ -788,8 +826,8 @@ function renderStart(){
 
 function setTab(v){
   view=v; document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.view===v));
-  ["start","setup","interview","review","library"].forEach(k=>$("#view-"+k).hidden=k!==v);
-  ({start:renderStart,setup:renderSetup,interview:renderInterview,review:renderReview,library:renderLibrary})[v]();
+  ["start","setup","interview","review","library","editor"].forEach(k=>$("#view-"+k).hidden=k!==v);
+  ({start:renderStart,setup:renderSetup,interview:renderInterview,review:renderReview,library:renderLibrary,editor:renderEditor})[v]();
   window.scrollTo({top:0});
 }
 function sessLine(){ $("#sessLine").textContent=[S.title||"New interview",S.code,S.interviewer,S.date].filter(Boolean).join(" · "); }
@@ -853,9 +891,7 @@ function promptHTML(p){
   </article>`;
 }
 /* ---- interview: timeline + focus ---- */
-const STOPS={"3.1":"Trigger","3.2":"Search","3.3":"Choice","3.4":"Choice","3.5":"Start · During","3.6":"End / Stop","3.7":"During","3.8":"After","3.9":"Prove","3.10":"Support","3B.1":"Stopped at","3B.2":"Workaround","3B.3":"Good enough"};
-const TOTAL=STAGES.reduce((a,s)=>a+s.plan,0);
-const STAGE_START={}; (()=>{let t=0; STAGES.forEach(s=>{STAGE_START[s.id]=t; t+=s.plan;});})();
+const DEF_STOPS={"3.1":"Trigger","3.2":"Search","3.3":"Choice","3.4":"Choice","3.5":"Start · During","3.6":"End / Stop","3.7":"During","3.8":"After","3.9":"Prove","3.10":"Support","3B.1":"Stopped at","3B.2":"Workaround","3B.3":"Good enough"};
 function steps(){
   const out=[];
   STAGES.forEach(s=>{
@@ -885,7 +921,7 @@ function timelineHTML(all,cur){
     const label=st.kind==="prompt"?(STOPS[st.id]||""):"";
     return `<button class="tl-dot ${done?"done":""} ${isCur?"cur":""} ${star?"star":""} ${act?"act":""}" data-step="${esc(st.id)}" style="left:${pct(st.at)}%" title="${esc((st.kind==="prompt"?st.id+"  ":"")+shortQ(st))}" aria-label="${esc((st.kind==="prompt"?st.id+": ":"")+shortQ(st))}">
       <i></i>${st.kind==="prompt"?`<span class="tl-id">${esc(st.id)}</span>`:""}${label?`<span class="tl-stop ${lo?"lo":""}">${esc(label)}</span>`:""}</button>`}).join("");
-  const ticks=[0,10,20,30,40,50].map(m=>`<span class="tl-tick" style="left:${pct(m)}%">${m}′</span>`).join("");
+  const ticks=Array.from({length:Math.floor(TOTAL/(TOTAL>70?20:10))+1},(_,i)=>i*(TOTAL>70?20:10)).map(m=>`<span class="tl-tick" style="left:${pct(m)}%">${m}′</span>`).join("");
   return `<div class="tl-card">
     <div class="tl-head">
       <div class="row" style="gap:8px"><div class="tl-pace" id="tlPace"></div><button class="btn small stuck" id="stuckBtn" aria-expanded="false" aria-controls="stuckPanel">Stuck?</button></div>
@@ -1056,8 +1092,8 @@ function renderLibrary(){
   else if(!db && !api) inner=`<div class="banner">No team archive is connected here. Interviews stay in this browser and you can still download each PDF.</div>`;
   else if(libState==="loading") inner=`<p class="empty" style="margin-top:14px">Loading saved interviews…</p>`;
   else if(!library.length) inner=`<div class="banner">No interviews saved yet. Finish one, open Review and choose “Save to team database”. Everyone in the group will see it here.</div>`;
-  else inner=`<div class="lib">${library.map(r=>{const c=ALL.filter(p=>!p.path||p.path==="both"||p.path===r.path),a=c.filter(p=>r.prompts?.[p.id]?.asked).length;
-    return `<article class="card"><div class="eyebrow">${esc(r.code||"No code")} · Path ${esc(r.path||"A")}</div><h3>${esc(r.title||"Untitled")}</h3>
+  else inner=`<div class="lib">${library.map(r=>{const c=promptsOf(r.guide||DEFAULT_GUIDE).filter(p=>!p.path||p.path==="both"||p.path===r.path),a=c.filter(p=>r.prompts?.[p.id]?.asked).length;
+    return `<article class="card"><div class="eyebrow">${esc(r.code||"No code")} · Path ${esc(r.path||"A")} · ${esc((r.guide&&r.guide.name)||"Class guide")}</div><h3>${esc(r.title||"Untitled")}</h3>
       <div class="meta"><span>${esc(r.interviewer)}</span><span>${esc(r.date)}</span><span>${a}/${c.length} prompts</span><span>${(r.log||[]).filter(e=>e.kind==="quote").length} quotes</span></div>
       <div class="row"><button class="btn small" data-open="${esc(r.id)}">Open</button><button class="btn small" data-pdf="${esc(r.id)}">PDF</button><button class="btn small ghost" data-rm="${esc(r.id)}">Delete</button></div>
       <div class="row" id="rm-${esc(r.id)}" hidden><span class="status err" style="margin:0">Delete for the whole team?</span><button class="btn small" data-rmyes="${esc(r.id)}">Delete</button><button class="btn small ghost" data-rmno="${esc(r.id)}">Keep</button></div>
@@ -1065,9 +1101,235 @@ function renderLibrary(){
   el.innerHTML=`<div class="eyebrow">Team archive</div><h1 style="margin-top:4px">Saved interviews</h1><p class="lede">Every interview the group saved, newest first. Open one to continue editing or download its PDF again.</p>${inner}`;
 }
 
+/* ---------------- guides: data model ---------------- */
+const clone=o=>JSON.parse(JSON.stringify(o));
+const GKEY="ifg-guides-v1";
+function scriptObj(arr){ if(!arr) return {en:"",es:""}; return {en:arr.filter(l=>!l.startsWith("ES: ")).join("\n\n"), es:arr.filter(l=>l.startsWith("ES: ")).map(l=>l.slice(4)).join("\n\n")}; }
+function buildDefaultGuide(){
+  return { id:"default", builtin:true, name:"Class guide (default)", author:"ELISAVA team", updatedAt:0,
+    study:{ q:"¿Cómo puede ELISAVA ofrecer formatos de aprendizaje que se adapten a los horarios laborales, los ritmos y las necesidades de los profesionales creativos en España de entre 21 y 45 años?",
+      who:"creative professionals, 21-45, working in Spain", focus:"fitting learning into a creative working life", method:"semi-structured interview, about 50 min" },
+    rqs: DEF_RQ_DETAIL.map(r=>({k:r.k,t:r.t,q:r.q,listen:r.listen})),
+    hyps: DEF_HYPS.map(([k,t])=>({k,t})),
+    stages: DEF_STAGES.map(st=>({ id:st.id, title:st.title, goal:st.goal, plan:st.plan, range:(DEF_ARC[st.id]||{}).range||"", timeline:!!st.timeline,
+      key:((DEF_ARC[st.id]||{}).key||[]).slice(), script:scriptObj(st.script), closing:scriptObj(st.closing),
+      prompts: st.prompts.map(p=>({ id:p.id, en:p.en, es:p.es, probe:p.probe, tip:p.tip, rq:(p.rq||[]).slice(), star:!!p.star, path:p.path||(st.timeline?"A":""), stop:DEF_STOPS[p.id]||"" })) })) };
+}
+function toLines(o){ if(!o) return null; const out=[]; if((o.en||"").trim()) out.push(o.en.trim()); if((o.es||"").trim()) out.push("ES: "+o.es.trim()); return out.length?out:null; }
+function applyGuide(g){
+  ACTIVE=g;
+  STUDY=g.study||{};
+  RQ_DETAIL=(g.rqs||[]).map(r=>({...r}));
+  RQS=Object.fromEntries(RQ_DETAIL.map(r=>[r.k,r.t]));
+  HYPS=(g.hyps||[]).map(h=>[h.k,h.t]);
+  STAGES=(g.stages||[]).map((st,i)=>({ id:st.id, n:String(i+1), title:st.title||("Stage "+(i+1)), goal:st.goal||"", plan:Math.max(1,+st.plan||1), timeline:!!st.timeline,
+    script:toLines(st.script), closing:toLines(st.closing),
+    prompts:(st.prompts||[]).map(p=>({ id:p.id, en:p.en||"", es:p.es||"", probe:p.probe||"", tip:p.tip||"", rq:(p.rq||[]).filter(r=>RQS[r]), star:!!p.star, path: st.timeline?(p.path||"A"):undefined })) }));
+  ALL=STAGES.flatMap(s=>s.prompts.map(p=>({...p,stage:s.id})));
+  ARC=Object.fromEntries((g.stages||[]).map(st=>[st.id,{range:st.range||"",key:(st.key||[]).slice()}]));
+  STOPS={}; (g.stages||[]).forEach(st=>(st.prompts||[]).forEach(p=>{ if(p.stop) STOPS[p.id]=p.stop; }));
+  TOTAL=Math.max(1,STAGES.reduce((a,s)=>a+s.plan,0));
+  STAGE_START={}; let t=0; STAGES.forEach(s=>{STAGE_START[s.id]=t; t+=s.plan;});
+}
+function localGuides(){ try{ const a=JSON.parse(localStorage.getItem(GKEY)||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function setLocalGuides(a){ try{ localStorage.setItem(GKEY,JSON.stringify(a)); }catch(e){} }
+function mergeGuides(remote){
+  const map=new Map(); [...localGuides(),...(remote||[])].forEach(g=>{ if(!g||!g.id||g.builtin) return; const o=map.get(g.id); if(!o||(g.updatedAt||0)>=(o.updatedAt||0)) map.set(g.id,g); });
+  [...(GUIDES_DELETED||[])].forEach(id=>map.delete(id));
+  const list=[...map.values()].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  setLocalGuides(list); GUIDES=[DEFAULT_GUIDE,...list]; renderGuideSel();
+}
+let GUIDES_DELETED=new Set();
+function findGuide(id){ return GUIDES.find(g=>g.id===id); }
+async function loadTeamGuides(){
+  try{
+    if(db){ const snap=await db.collection("guides").get(); mergeGuides(snap.docs.map(d=>d.data())); }
+    else if(api){ const d=await apiCall("GET","?kind=guide"); mergeGuides(d.items||[]); }
+    else mergeGuides([]);
+  }catch(e){ mergeGuides([]); }
+  if(view==="editor") renderEditor();
+}
+async function saveGuideRemote(g){
+  if(db){ await db.collection("guides").doc(g.id).set(clone(g)); return "team"; }
+  if(api){ await apiCall("POST","?kind=guide",g); return "team"; }
+  return "local";
+}
+async function deleteGuideRemote(id){
+  if(db){ await db.collection("guides").doc(id).delete(); return; }
+  if(api){ await apiCall("DELETE","?kind=guide&id="+encodeURIComponent(id)); }
+}
+function useGuide(g,quiet){
+  S.guide=clone(g); S.guideId=g.id; applyGuide(S.guide);
+  if(!steps().some(x=>x.id===S.cur)){ S.cur=""; S.stage=STAGES[0]?.id||""; }
+  persist(); renderGuideSel();
+  if(!quiet) toast("Using guide: "+g.name);
+  ({start:renderStart,setup:renderSetup,interview:renderInterview,review:renderReview,library:renderLibrary,editor:renderEditor})[view]?.();
+}
+function renderGuideSel(){
+  const sel=$("#guideSel"); if(!sel) return;
+  const cur=S.guideId||"default";
+  const own=GUIDES.filter(g=>!g.builtin);
+  const outdated=S.guide&&findGuide(cur)&&(findGuide(cur).updatedAt||0)>(S.guide.updatedAt||0);
+  sel.innerHTML=`<option value="default" ${cur==="default"?"selected":""}>${esc(DEFAULT_GUIDE.name)}</option>`+
+    (own.length?`<optgroup label="Team guides">${own.map(g=>`<option value="${esc(g.id)}" ${g.id===cur?"selected":""}>${esc(g.name)}${g.author?" · "+esc(g.author):""}</option>`).join("")}</optgroup>`:"")+
+    (S.guide&&!findGuide(cur)?`<option value="${esc(cur)}" selected>${esc(S.guide.name||"Guide")} (this interview)</option>`:"")+
+    `<optgroup label="Actions"><option value="__edit">✎ Edit guides…</option><option value="__new">+ New guide (copy of current)</option></optgroup>`;
+  sel.title=outdated?"A newer version of this guide was saved by the team":"";
+  $("#guidePick")?.classList.toggle("outdated",!!outdated);
+}
+
+/* ---------------- guides: editor ---------------- */
+let EDIT=null, EDIT_DIRTY=false;
+function newGuideFrom(src,blankOne){
+  const g=blankOne?{ study:{q:"",who:"",focus:"",method:""}, rqs:[{k:"RQ1",t:"",q:"",listen:""}], hyps:[],
+      stages:[{id:"s"+Date.now().toString(36),title:"Stage 1",goal:"",plan:10,range:"",timeline:false,key:[],script:{en:"",es:""},closing:{en:"",es:""},prompts:[blankPrompt("1.1")]}] } : clone(src);
+  g.id="g-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  g.builtin=false; g.name=blankOne?"New guide":("Copy of "+(src.name||"guide")).replace("Copy of Class guide (default)","My guide"); g.author=S.interviewer||""; g.updatedAt=0;
+  return g;
+}
+function promptsOf(g){ return (g?.stages||[]).flatMap(st=>(st.prompts||[]).map(p=>({...p,path:st.timeline?(p.path||"A"):undefined}))); }
+function blankPrompt(id){ return {id,en:"",es:"",probe:"",tip:"",rq:[],star:false,path:"A",stop:""}; }
+function setPath(o,path,v){ const k=path.split("."); let x=o; for(let i=0;i<k.length-1;i++){ x=x[/^\d+$/.test(k[i])?+k[i]:k[i]]; } x[/^\d+$/.test(k.at(-1))?+k.at(-1):k.at(-1)]=v; }
+function markDirty(){ EDIT_DIRTY=true; const st=$("#edStatus"); if(st){ st.className="status"; st.textContent="Unsaved changes"; } }
+function nextPromptId(si){ const n=si+1; let i=(EDIT.stages[si].prompts.length)+1; const ids=new Set(EDIT.stages.flatMap(s=>s.prompts.map(p=>p.id))); while(ids.has(n+"."+i)) i++; return n+"."+i; }
+function validateGuide(g){
+  const errs=[];
+  if(!(g.name||"").trim()) errs.push("Give the guide a name.");
+  if(!g.stages.length) errs.push("Add at least one stage.");
+  const ids=new Set();
+  g.stages.forEach((st,si)=>{ if(!(st.title||"").trim()) errs.push(`Stage ${si+1} needs a title.`);
+    if(!st.prompts.length) errs.push(`Stage ${si+1} needs at least one question.`);
+    st.prompts.forEach(p=>{ p.id=(p.id||"").trim(); if(!/^[A-Za-z0-9.]{1,12}$/.test(p.id)) errs.push(`Question ID “${p.id||"empty"}” in stage ${si+1}: use letters, digits and dots only.`);
+      else if(ids.has(p.id)) errs.push(`Question ID ${p.id} is used twice.`); ids.add(p.id);
+      if(!(p.en||"").trim()&&!(p.es||"").trim()) errs.push(`Question ${p.id||"?"} has no text.`); }); });
+  const ks=new Set(); g.rqs.forEach((r,i)=>{ r.k=(r.k||"").trim(); if(!r.k) errs.push(`Research question ${i+1} needs a code (e.g. RQ${i+1}).`); else if(ks.has(r.k)) errs.push(`Research question code ${r.k} is used twice.`); ks.add(r.k); });
+  return errs;
+}
+function edField(label,path,val,{area=false,rows=2,ph="",wide=false,type="text"}={}){
+  const id="ed-"+path.replace(/\./g,"-");
+  return `<div class="field ${wide?"wide":""}"><label class="lab" for="${id}">${label}</label>${area?`<textarea id="${id}" data-ed="${path}" rows="${rows}" placeholder="${esc(ph)}">${esc(val)}</textarea>`:`<input type="${type}" id="${id}" data-ed="${path}" value="${esc(val)}" placeholder="${esc(ph)}">`}</div>`;
+}
+function renderEditor(){
+  const el=$("#view-editor");
+  const own=GUIDES.filter(g=>!g.builtin);
+  if(!EDIT){ const cur=findGuide(S.guideId||"default"); if(cur&&!cur.builtin) EDIT=clone(cur); }
+  const head=`<div class="ed-top">
+      <div><div class="eyebrow">Guide editor</div><h1 style="margin-top:4px">${EDIT?esc(EDIT.name||"Untitled guide"):"Your interview guides"}</h1>
+      <p class="lede">Write your own research questions, stages and interview questions. Saved guides appear for the whole team in the <b>Guide</b> menu at the top.</p></div>
+      <div class="row">
+        <label class="lab" for="edPick" style="margin:0">Edit</label>
+        <select id="edPick" class="ed-pick"><option value="">Choose a guide…</option>${own.map(g=>`<option value="${esc(g.id)}" ${EDIT&&EDIT.id===g.id?"selected":""}>${esc(g.name)}${g.author?" · "+esc(g.author):""}</option>`).join("")}</select>
+        <button class="btn small" data-edact="dup">Copy current guide</button><button class="btn small" data-edact="blank">Start empty</button>
+      </div></div>`;
+  if(!EDIT){
+    el.innerHTML=head+`<div class="banner">The class guide stays as it is, so everyone has a safe default. To make your own version, press <b>Copy current guide</b> (keeps all questions, then change what you need) or <b>Start empty</b>.${own.length?" Or pick a team guide above to edit it.":""}</div>`;
+    return;
+  }
+  const g=EDIT, rqKeys=g.rqs.map(r=>r.k).filter(Boolean);
+  const stageHTML=(st,si)=>`<details class="ed-stage" ${si===(renderEditor._open??0)?"open":""} data-si="${si}">
+      <summary><span class="arc-n">${si+1}</span><span class="ed-st-t">${esc(st.title||"Untitled stage")}</span><span class="chip">${st.prompts.length} q · ${esc(st.plan)} min</span>${st.timeline?'<span class="chip stop">Journey timeline</span>':""}</summary>
+      <div class="ed-body">
+        <div class="fields">
+          ${edField("Stage title",`stages.${si}.title`,st.title)}
+          ${edField("Planned minutes",`stages.${si}.plan`,st.plan,{type:"number"})}
+          ${edField("Goal of this stage",`stages.${si}.goal`,st.goal,{area:true,wide:true})}
+          ${edField("Time range shown on the start page (optional)",`stages.${si}.range`,st.range,{ph:"e.g. 10-15 min"})}
+          <div class="field"><span class="lab">Options</span><label class="check-inline"><input type="checkbox" id="ed-tl-${si}" data-edck="stages.${si}.timeline" ${st.timeline?"checked":""}> Use the learning-journey timeline (Path A / B)</label></div>
+        </div>
+        <details class="ed-more" ${(st.script?.en||st.script?.es||st.closing?.en||st.closing?.es)?"open":""}><summary>Scripts to read aloud (optional)</summary><div class="fields">
+          ${edField("At the start of this stage (EN)",`stages.${si}.script.en`,st.script?.en||"",{area:true,rows:3,wide:true})}
+          ${edField("At the start of this stage (ES)",`stages.${si}.script.es`,st.script?.es||"",{area:true,rows:3,wide:true})}
+          ${edField("At the end of this stage (EN)",`stages.${si}.closing.en`,st.closing?.en||"",{area:true,rows:2,wide:true})}
+          ${edField("At the end of this stage (ES)",`stages.${si}.closing.es`,st.closing?.es||"",{area:true,rows:2,wide:true})}
+        </div></details>
+        <div class="ed-qs">${st.prompts.map((p,pi)=>`<article class="ed-q">
+          <div class="ed-q-top"><input type="text" class="ed-id" id="ed-id-${si}-${pi}" data-ed="stages.${si}.prompts.${pi}.id" value="${esc(p.id)}" aria-label="Question ID">
+            <label class="check-inline"><input type="checkbox" id="ed-star-${si}-${pi}" data-edck="stages.${si}.prompts.${pi}.star" ${p.star?"checked":""}> Priority</label>
+            <label class="check-inline"><input type="checkbox" id="ed-key-${si}-${pi}" data-edkey="${si}.${pi}" ${(st.key||[]).includes(p.id)?"checked":""}> Key question on start page</label>
+            <span class="ed-q-act"><button class="btn small ghost" data-edact="qup" data-si="${si}" data-pi="${pi}" ${pi?"":"disabled"} aria-label="Move up">↑</button><button class="btn small ghost" data-edact="qdown" data-si="${si}" data-pi="${pi}" ${pi<st.prompts.length-1?"":"disabled"} aria-label="Move down">↓</button><button class="btn small ghost" data-edact="qdel" data-si="${si}" data-pi="${pi}">Remove</button></span></div>
+          <div class="fields">
+            ${edField("Question (EN)",`stages.${si}.prompts.${pi}.en`,p.en,{area:true,wide:true})}
+            ${edField("Question (ES)",`stages.${si}.prompts.${pi}.es`,p.es,{area:true,wide:true})}
+            ${edField("Probe / listen for",`stages.${si}.prompts.${pi}.probe`,p.probe,{area:true})}
+            ${edField("Tip for the interviewer",`stages.${si}.prompts.${pi}.tip`,p.tip,{area:true})}
+            ${st.timeline?`<div class="field"><label class="lab" for="ed-path-${si}-${pi}">Path</label><select id="ed-path-${si}-${pi}" data-ed="stages.${si}.prompts.${pi}.path">${[["A","A · did a learning experience"],["B","B · nothing structured"],["both","Both paths"]].map(([k,l])=>`<option value="${k}" ${p.path===k?"selected":""}>${l}</option>`).join("")}</select></div>
+              ${edField("Timeline stop label",`stages.${si}.prompts.${pi}.stop`,p.stop||"",{ph:"e.g. Trigger"})}`:""}
+            <div class="field wide"><span class="lab">Objectives (research questions)</span><div class="ed-rqs">${rqKeys.length?rqKeys.map(k=>`<label class="check-inline"><input type="checkbox" id="ed-rq-${si}-${pi}-${esc(k)}" data-edrq="${si}.${pi}" value="${esc(k)}" ${(p.rq||[]).includes(k)?"checked":""}> ${esc(k)}</label>`).join(""):'<span class="empty">Add research questions first.</span>'}</div></div>
+          </div></article>`).join("")}
+          <button class="btn small" data-edact="qadd" data-si="${si}">+ Add question</button>
+        </div>
+        <div class="row ed-st-act"><button class="btn small ghost" data-edact="sup" data-si="${si}" ${si?"":"disabled"}>Move stage up</button><button class="btn small ghost" data-edact="sdown" data-si="${si}" ${si<g.stages.length-1?"":"disabled"}>Move stage down</button><button class="btn small ghost" data-edact="sdel" data-si="${si}">Remove stage</button></div>
+      </div></details>`;
+  el.innerHTML=head+`
+  <div class="ed-bar">
+    <div class="row"><button class="btn primary" data-edact="save">${db||api?"Save for the team":"Save in this browser"}</button><button class="btn" data-edact="use">Use for my interview</button><button class="btn ghost" data-edact="del">Delete guide</button></div>
+    <p class="status" id="edStatus">${EDIT_DIRTY?"Unsaved changes":(g.updatedAt?"Saved "+new Date(g.updatedAt).toLocaleString():"Not saved yet")}</p>
+    <div class="row" id="edDelConfirm" hidden><span class="status err" style="margin:0">Delete this guide for the whole team? Interviews already done keep their copy.</span><button class="btn small" data-edact="delyes">Delete</button><button class="btn small ghost" data-edact="delno">Keep</button></div>
+  </div>
+  <section class="panel stack"><h2>1 · Guide details</h2><div class="fields">
+    ${edField("Guide name",`name`,g.name)}${edField("Created by",`author`,g.author,{ph:"Your name"})}
+    ${edField("Study question",`study.q`,g.study?.q||"",{area:true,wide:true})}
+    ${edField("Who",`study.who`,g.study?.who||"")}${edField("Focus",`study.focus`,g.study?.focus||"")}${edField("Method",`study.method`,g.study?.method||"",{wide:true})}
+  </div></section>
+  <section class="panel stack"><h2>2 · Research questions</h2><p class="empty" style="margin:0">For the team only, never read out. Tag interview questions with these codes to see coverage.</p>
+    ${g.rqs.map((r,ri)=>`<article class="ed-q"><div class="ed-q-top"><input type="text" class="ed-id" id="ed-rqk-${ri}" data-ed="rqs.${ri}.k" value="${esc(r.k)}" aria-label="Code"><span class="ed-q-act"><button class="btn small ghost" data-edact="rqdel" data-ri="${ri}">Remove</button></span></div>
+      <div class="fields">${edField("Short name",`rqs.${ri}.t`,r.t)}${edField("Listen for",`rqs.${ri}.listen`,r.listen)}${edField("Research question",`rqs.${ri}.q`,r.q,{area:true,wide:true})}</div></article>`).join("")}
+    <div><button class="btn small" data-edact="rqadd">+ Add research question</button></div></section>
+  <section class="panel stack"><h2>3 · Hypotheses</h2>
+    ${g.hyps.map((h,hi)=>`<div class="ed-hyp"><input type="text" class="ed-id" id="ed-hk-${hi}" data-ed="hyps.${hi}.k" value="${esc(h.k)}" aria-label="Code"><textarea id="ed-ht-${hi}" data-ed="hyps.${hi}.t" rows="2">${esc(h.t)}</textarea><button class="btn small ghost" data-edact="hdel" data-hi="${hi}">Remove</button></div>`).join("")}
+    <div><button class="btn small" data-edact="hadd">+ Add hypothesis</button></div></section>
+  <section class="stack"><div class="row" style="justify-content:space-between"><h2>4 · Stages and questions</h2><button class="btn small" data-edact="sadd">+ Add stage</button></div>
+    ${g.stages.map(stageHTML).join("")}</section>`;
+}
+async function editorAction(b){
+  const a=b.dataset.edact, si=+b.dataset.si, pi=+b.dataset.pi;
+  const keepOpen=()=>{ renderEditor._open=isNaN(si)?renderEditor._open:si; };
+  if(a==="dup"||a==="blank"){ if(EDIT_DIRTY&&!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Discard unsaved changes?"; return; }
+    EDIT=newGuideFrom(ACTIVE,a==="blank"); EDIT_DIRTY=true; renderEditor._open=0; renderEditor(); toast(a==="blank"?"Empty guide created. Save it when ready.":"Copy created. Edit it and press Save."); return; }
+  if(!EDIT) return;
+  const st=EDIT.stages[si];
+  if(a==="qadd"){ st.prompts.push(blankPrompt(nextPromptId(si))); keepOpen(); }
+  else if(a==="qdel"){ const [p]=st.prompts.splice(pi,1); st.key=(st.key||[]).filter(k=>k!==p.id); keepOpen(); }
+  else if(a==="qup"&&pi>0){ [st.prompts[pi-1],st.prompts[pi]]=[st.prompts[pi],st.prompts[pi-1]]; keepOpen(); }
+  else if(a==="qdown"&&pi<st.prompts.length-1){ [st.prompts[pi+1],st.prompts[pi]]=[st.prompts[pi],st.prompts[pi+1]]; keepOpen(); }
+  else if(a==="sadd"){ const n=EDIT.stages.length+1; EDIT.stages.push({id:"s"+Date.now().toString(36),title:"Stage "+n,goal:"",plan:10,range:"",timeline:false,key:[],script:{en:"",es:""},closing:{en:"",es:""},prompts:[]}); EDIT.stages.at(-1).prompts.push(blankPrompt(nextPromptId(n-1))); renderEditor._open=n-1; }
+  else if(a==="sdel"){ if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Click again to remove the stage"; return; } EDIT.stages.splice(si,1); renderEditor._open=-1; }
+  else if(a==="sup"&&si>0){ [EDIT.stages[si-1],EDIT.stages[si]]=[EDIT.stages[si],EDIT.stages[si-1]]; renderEditor._open=si-1; }
+  else if(a==="sdown"&&si<EDIT.stages.length-1){ [EDIT.stages[si+1],EDIT.stages[si]]=[EDIT.stages[si],EDIT.stages[si+1]]; renderEditor._open=si+1; }
+  else if(a==="rqadd"){ let i=EDIT.rqs.length+1; const ks=new Set(EDIT.rqs.map(r=>r.k)); while(ks.has("RQ"+i)) i++; EDIT.rqs.push({k:"RQ"+i,t:"",q:"",listen:""}); }
+  else if(a==="rqdel"){ const [r]=EDIT.rqs.splice(+b.dataset.ri,1); EDIT.stages.forEach(s=>s.prompts.forEach(p=>p.rq=(p.rq||[]).filter(k=>k!==r.k))); }
+  else if(a==="hadd"){ let i=EDIT.hyps.length+1; const ks=new Set(EDIT.hyps.map(h=>h.k)); while(ks.has("H"+i)) i++; EDIT.hyps.push({k:"H"+i,t:""}); }
+  else if(a==="hdel"){ EDIT.hyps.splice(+b.dataset.hi,1); }
+  else if(a==="del"){ $("#edDelConfirm").hidden=false; return; }
+  else if(a==="delno"){ $("#edDelConfirm").hidden=true; return; }
+  else if(a==="delyes"){ const id=EDIT.id; try{ if(EDIT.updatedAt) await deleteGuideRemote(id); }catch(e){ toast("Could not delete on the server. Try again."); return; }
+    GUIDES_DELETED.add(id); setLocalGuides(localGuides().filter(g=>g.id!==id)); mergeGuides(GUIDES.filter(g=>!g.builtin&&g.id!==id));
+    if(S.guideId===id) toast("Deleted. Your current interview keeps its own copy of the guide.");
+    else toast("Guide deleted"); EDIT=null; EDIT_DIRTY=false; renderEditor(); return; }
+  else if(a==="save"||a==="use"){
+    const errs=validateGuide(EDIT); const stEl=$("#edStatus");
+    if(errs.length){ stEl.className="status err"; stEl.textContent=errs.slice(0,3).join(" "); return; }
+    EDIT.stages.forEach(s=>{ const ids=new Set(s.prompts.map(p=>p.id)); s.key=(s.key||[]).filter(k=>ids.has(k)); s.plan=Math.max(1,+s.plan||1); });
+    if(a==="save"){
+      EDIT.updatedAt=Date.now(); EDIT.builtin=false; stEl.className="status"; stEl.textContent="Saving…";
+      let where="local";
+      try{ where=await saveGuideRemote(EDIT); }
+      catch(e){ stEl.className="status err"; stEl.textContent= e.code==="bad_code" ? "The team code is missing or wrong. Enter it under Setup, then save again." : "Could not reach the team archive. The guide is kept in this browser; try again in a moment."; where="failed"; }
+      GUIDES_DELETED.delete(EDIT.id); setLocalGuides([...localGuides().filter(g=>g.id!==EDIT.id),clone(EDIT)]); mergeGuides(GUIDES.filter(g=>!g.builtin).filter(g=>g.id!==EDIT.id).concat([clone(EDIT)]));
+      EDIT_DIRTY=false;
+      if(where!=="failed"){ stEl.className="status ok"; stEl.textContent= where==="team" ? "Saved for the team. Everyone sees it in the Guide menu." : "Saved in this browser."; }
+      if(S.guideId===EDIT.id){ useGuide(EDIT,true); }
+      return;
+    }
+    useGuide(clone(EDIT)); toast(EDIT_DIRTY?"Using this version for your interview. Remember to save it for the team.":"Using this guide for your interview"); return;
+  }
+  markDirty(); renderEditor();
+}
+
 /* ---------------- events ---------------- */
 document.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.edact) return editorAction(b);
   if(b.dataset.view) return setTab(b.dataset.view);
   if(b.dataset.goto) return setTab(b.dataset.goto);
   if(b.id==="timerReset"){
@@ -1089,28 +1351,32 @@ document.addEventListener("click",e=>{
   if(b.dataset.hyp){ const h=S.hyps[b.dataset.hyp]||(S.hyps[b.dataset.hyp]={}); h.v=b.dataset.v; persist();
     document.querySelectorAll(`[data-hyp="${b.dataset.hyp}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b)); return; }
   if(b.id==="goInterview"){ if(!S.interviewer||!S.title){ $("#setupStatus").className="status err"; $("#setupStatus").textContent="Add your name and an interview title first."; return;} setTab("interview"); return; }
-  if(b.id==="newIv"){ if(b.dataset.armed){ S=blank(); running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); renderSetup(); toast("New interview started"); }
+  if(b.id==="newIv"){ if(b.dataset.armed){ S=blank(); S.guide=clone(ACTIVE); S.guideId=ACTIVE.id; running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); renderSetup(); toast("New interview started"); }
     else { b.dataset.armed="1"; b.textContent="Click again to clear the current draft"; } return; }
   if(b.id==="stuckBtn"){ const sp=$("#stuckPanel"); sp.hidden=!sp.hidden; b.setAttribute("aria-expanded",!sp.hidden); return; }
   if(b.id==="startTimerHere"){ running=true; lastTick=performance.now(); $("#timerBtn").textContent="Pause"; b.parentElement.remove(); updateTimeline(); return; }
-  if(b.id==="newFromStart"){ if(b.dataset.armed){ S=blank(); running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); setTab("setup"); }
+  if(b.id==="newFromStart"){ if(b.dataset.armed){ S=blank(); S.guide=clone(ACTIVE); S.guideId=ACTIVE.id; running=false; $("#timerBtn").textContent="Start"; persist(); sessLine(); setTab("setup"); }
     else { b.dataset.armed="1"; b.textContent="Click again to clear the current draft"; } return; }
   if(b.dataset.arcjump){ if(!S.interviewer||!S.title){ setTab("setup"); toast("Fill in your name and a title first"); return; }
     const f=steps().find(x=>x.stage===b.dataset.arcjump); if(f){ S.cur=f.id; S.stage=f.stage; persist(); } setTab("interview"); return; }
   if(b.id==="saveBtn") return saveRecord();
   if(b.id==="pdfBtn") return downloadPDF(S);
   if(b.id==="aiBtn") return coach(b);
-  if(b.dataset.open){ const r=library.find(x=>x.id===b.dataset.open); if(r){ S=Object.assign(blank(),JSON.parse(JSON.stringify(r))); running=false; $("#timerBtn").textContent="Resume"; persist(); sessLine(); setTab("review"); toast("Interview opened"); } return; }
+  if(b.dataset.open){ const r=library.find(x=>x.id===b.dataset.open); if(r){ S=Object.assign(blank(),JSON.parse(JSON.stringify(r))); if(!S.guide){ S.guide=clone(DEFAULT_GUIDE); S.guideId="default"; } applyGuide(S.guide); renderGuideSel(); running=false; $("#timerBtn").textContent="Resume"; persist(); sessLine(); setTab("review"); toast("Interview opened"); } return; }
   if(b.dataset.pdf){ const r=library.find(x=>x.id===b.dataset.pdf); if(r) downloadPDF(Object.assign(blank(),r)); return; }
   if(b.dataset.rm){ $("#rm-"+CSS.escape(b.dataset.rm)).hidden=false; return; }
   if(b.dataset.rmno){ $("#rm-"+CSS.escape(b.dataset.rmno)).hidden=true; return; }
   if(b.dataset.rmyes && !db && api){ apiCall("DELETE","?id="+encodeURIComponent(b.dataset.rmyes)).then(()=>{toast("Interview deleted"); apiLoad();}).catch(()=>toast("Could not delete right now.")); return; }
-  if(b.id==="teamCodeBtn"){ setTeamCode($("#teamCode").value.trim()); libState="loading"; apiCall("GET").then(d=>{ library=(d.items||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)); libState="ready"; toast("Team code saved"); if(view==="library") renderLibrary(); else { const t=$("#teamStatus"); if(t){t.className="status ok"; t.textContent="Code works. You can save to the team archive.";} } })
+  if(b.id==="teamCodeBtn"){ setTeamCode($("#teamCode").value.trim()); libState="loading"; apiCall("GET").then(d=>{ loadTeamGuides(); library=(d.items||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)); libState="ready"; toast("Team code saved"); if(view==="library") renderLibrary(); else { const t=$("#teamStatus"); if(t){t.className="status ok"; t.textContent="Code works. You can save to the team archive.";} } })
       .catch(e=>{ libState=e.code==="bad_code"?"code":"error"; if(view==="library") renderLibrary(); else { const t=$("#teamStatus"); if(t){t.className="status err"; t.textContent=e.code==="bad_code"?"That code didn't work.":"Could not reach the server.";} } }); return; }
   if(b.dataset.rmyes){ db.collection("interviews").doc(b.dataset.rmyes).delete().then(()=>toast("Interview deleted")).catch(()=>toast("Could not delete. You may not have edit access.")); return; }
 });
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t.dataset.ed&&EDIT){ setPath(EDIT,t.dataset.ed,t.type==="number"?(+t.value||0):t.value); markDirty();
+    if(/^stages\.\d+\.title$/.test(t.dataset.ed)){ const sm=t.closest("details")?.querySelector(".ed-st-t"); if(sm) sm.textContent=t.value||"Untitled stage"; }
+    if(/^stages\.\d+\.prompts\.\d+\.id$/.test(t.dataset.ed)){ /* keep key list in sync with renamed ids */ const [,si,,pi]=t.dataset.ed.split("."); const st=EDIT.stages[+si]; if(t.dataset.prev&&st.key) st.key=st.key.map(k=>k===t.dataset.prev?t.value:k); t.dataset.prev=t.value; }
+    return; }
   if(t.dataset.f){ S[t.dataset.f]=t.value; persist(); sessLine(); return; }
   if(t.dataset.note){ P(t.dataset.note).note=t.value; persist(); renderLive(t.dataset.note); return; }
   if(t.dataset.hev){ (S.hyps[t.dataset.hev]||(S.hyps[t.dataset.hev]={})).e=t.value; persist(); return; }
@@ -1118,6 +1384,14 @@ document.addEventListener("input",e=>{
 });
 document.addEventListener("change",e=>{
   const t=e.target;
+  if(t.id==="guideSel"){ const v=t.value;
+    if(v==="__edit"){ renderGuideSel(); setTab("editor"); return; }
+    if(v==="__new"){ renderGuideSel(); EDIT=newGuideFrom(ACTIVE,false); EDIT_DIRTY=true; renderEditor._open=0; setTab("editor"); toast("Copy created. Edit it and press Save."); return; }
+    const g=v==="default"?DEFAULT_GUIDE:findGuide(v); if(g) useGuide(g); return; }
+  if(t.id==="edPick"){ const g=findGuide(t.value); if(g){ EDIT=clone(g); EDIT_DIRTY=false; renderEditor._open=0; renderEditor(); } return; }
+  if(t.dataset.edck&&EDIT){ setPath(EDIT,t.dataset.edck,t.checked); markDirty(); if(t.dataset.edck.endsWith(".timeline")){ renderEditor._open=+t.dataset.edck.split(".")[1]; renderEditor(); } return; }
+  if(t.dataset.edkey&&EDIT){ const [si,pi]=t.dataset.edkey.split(".").map(Number); const st=EDIT.stages[si], id=st.prompts[pi].id; st.key=(st.key||[]).filter(k=>k!==id); if(t.checked) st.key.push(id); markDirty(); return; }
+  if(t.dataset.edrq&&EDIT){ const [si,pi]=t.dataset.edrq.split(".").map(Number); const p=EDIT.stages[si].prompts[pi]; p.rq=(p.rq||[]).filter(k=>k!==t.value); if(t.checked) p.rq.push(t.value); markDirty(); return; }
   if(t.dataset.f){ S[t.dataset.f]=t.value; persist(); sessLine(); return; }
   if(t.dataset.check){ S.checks[t.dataset.check]=t.checked; persist(); return; }
   if(t.dataset.ask){ const id=t.dataset.ask; P(id).asked=t.checked; persist();
@@ -1206,7 +1480,7 @@ function buildPDF(R){
   doc.setFont("helvetica","bold"); doc.setFontSize(18); doc.text(doc.splitTextToSize(clean(R.title||"Untitled interview"),CW)[0],M,60);
   doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.text(clean([R.code,R.interviewer,R.date].filter(Boolean).join("  ·  ")),M,80);
   y=120;
-  const meta=[["Interviewer",R.interviewer],["Note-taker",R.noteTaker||"-"],["Date",R.date],["Participant",R.code||"-"],["Profile",R.profile||"-"],["Setting",`${R.setting} · ${R.language}`],["Path",R.path==="B"?"B (no structured learning)":"A (learning experience)"],["Duration",fmt(R.elapsed)],["Recontact",R.recontact||"Not recorded"]];
+  const meta=[["Guide",(R.guide&&R.guide.name)||"Class guide (default)"],["Interviewer",R.interviewer],["Note-taker",R.noteTaker||"-"],["Date",R.date],["Participant",R.code||"-"],["Profile",R.profile||"-"],["Setting",`${R.setting} · ${R.language}`],["Path",R.path==="B"?"B (no structured learning)":"A (learning experience)"],["Duration",fmt(R.elapsed)],["Recontact",R.recontact||"Not recorded"]];
   meta.forEach(([k,v])=>{ doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...grey); need(14); doc.text(k.toUpperCase(),M,y+9);
     doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(...ink); const l=doc.splitTextToSize(clean(v),CW-110); l.forEach((x,i)=>{need(13); doc.text(x,M+110,y+9); y+=13;}); y+=2; });
   y+=6; rule();
@@ -1241,7 +1515,7 @@ function buildPDF(R){
 async function downloadPDF(R){
   if(!window.jspdf){ toast("The PDF library did not load. Check your connection and reload."); return; }
   const name=[R.date,R.code||R.title,R.interviewer].filter(Boolean).map(translit).join("_").replace(/[^\w\-]+/g,"-").replace(/-+/g,"-").slice(0,90)+".pdf";
-  const blob=buildPDF(R).output("blob");
+  const prevG=ACTIVE; let blob; applyGuide(R.guide||DEFAULT_GUIDE); try{ blob=buildPDF(R).output("blob"); } finally{ applyGuide(prevG); }
   if(dlCap){ try{ await dlCap.save({filename:name,data:blob}); toast("PDF saved"); }
     catch(err){ if(err&&err.code!=="declined") toast("The PDF could not be saved here."); } return; }
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
@@ -1272,6 +1546,12 @@ Do not invent facts that are not in the notes.`;
 }
 
 /* ---------------- boot ---------------- */
+function setHdr(){ const h=document.querySelector(".bar"); if(h) document.documentElement.style.setProperty("--hdr",(h.offsetHeight+6)+"px"); }
+window.addEventListener("resize",setHdr); setTimeout(setHdr,0); setTimeout(setHdr,800);
+DEFAULT_GUIDE=buildDefaultGuide(); GUIDES=[DEFAULT_GUIDE,...localGuides().filter(g=>g&&g.id&&!g.builtin)];
+if(!S.guide||S.guideId==="default"||!S.guideId){ S.guide=clone(DEFAULT_GUIDE); S.guideId="default"; }
+applyGuide(S.guide); renderGuideSel();
+window.addEventListener("beforeunload",e=>{ if(EDIT_DIRTY){ e.preventDefault(); e.returnValue=""; } });
 sessLine(); $("#clock").textContent=fmt(S.elapsed); if(S.elapsed>0) $("#timerBtn").textContent="Resume";
 setTab("start");
 (async()=>{
@@ -1282,11 +1562,13 @@ setTab("start");
       clearTimeout(t); }catch(e){ api=false; }
     libState=api?"loading":"none";
     if(api){ apiLoad(); if(view==="setup") renderSetup(); }
+    loadTeamGuides();
     if(view==="library") renderLibrary(); return; }
   const [d,dl,sm,u]=await Promise.all(["db","downloads","sample","user"].map(n=>window.claude.use(n).catch(()=>null)));
   db=d; dlCap=dl; sampleCap=sm; userCap=u;
   try{ myId=u? await u.id():null; }catch(e){}
   if(view==="review") renderReview();
+  loadTeamGuides();
   if(db){ db.collection("interviews").orderBy("updatedAt","desc").limit(200).onSnapshot(snap=>{
       library=snap.docs.map(x=>x.data()).filter(Boolean); libState="ready"; if(view==="library") renderLibrary(); },
     ()=>{ libState="ready"; if(view==="library") renderLibrary(); }); }
